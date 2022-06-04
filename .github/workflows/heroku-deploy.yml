@@ -1,0 +1,22 @@
+name: Deploy
+
+on: 
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          buildpack: "https://github.com/heroku/heroku-buildpack-nodejs"
+          procfile: "web: npm run start:prod"
+        env:
+          APP_PORT: 80
+          APP_VERSION: ${GITHUB_REF##*/}
