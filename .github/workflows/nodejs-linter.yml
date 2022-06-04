@@ -1,6 +1,6 @@
 name: NodeJS Linter
 
-on: 
+on:
   pull_request:
     branches: ['*']
 
