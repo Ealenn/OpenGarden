@@ -12,7 +12,7 @@ const currentPackage = require('../package.json');
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   await bootstrapSwagger(app);
-  await app.listen(process.env.PORT || 8080);
+  await app.listen(process.env.APP_PORT || 8080);
 }
 
 /**
@@ -27,7 +27,7 @@ async function bootstrapSwagger(app: INestApplication): Promise<void> {
   const config = new DocumentBuilder()
     .setTitle(appName)
     .setDescription(currentPackage.description)
-    .setVersion(currentPackage.version)
+    .setVersion(process.env.APP_VERSION || currentPackage.version)
     .setLicense(currentPackage.license, currentPackage.licenseUrl)
     .setExternalDoc('GitHub Repository', currentPackage.homepage)
     .build();
