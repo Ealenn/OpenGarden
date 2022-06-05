@@ -50,6 +50,7 @@
     "bcrypt": "^5.x.x",
     "class-transformer": "^0.5.x",
     "class-validator": "^0.13.x",
+    "helmet": "^5.x.x",
     "mongoose": "^6.x.x",
     "passport": "^0.5.x",
     "passport-jwt": "^4.x.x",

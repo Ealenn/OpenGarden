@@ -29,7 +29,7 @@ export class AccountController {
   @Post('login')
   @ApiResponse({ status: 200, type: JwtResponseBody })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  async postAuthLogin(@Body() loginRequestBody: LoginRequestBody) {
+  async login(@Body() loginRequestBody: LoginRequestBody) {
     const jwt = await this.authService.login(
       loginRequestBody.email,
       loginRequestBody.password,
@@ -42,7 +42,7 @@ export class AccountController {
   @ApiResponse({ status: 200, type: ProfileResponseBody })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 409, description: 'Conflict' })
-  async postAuthRegister(@Body() registerRequestBody: RegisterRequestBody) {
+  async register(@Body() registerRequestBody: RegisterRequestBody) {
     const createUser: User = {
       ...registerRequestBody,
       _id: null,

@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { User, UserDocument } from './Models/user';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,14 +10,14 @@ export class UsersService {
 
   async create(user: User): Promise<User> {
     try {
-      await this.userModel.create(user);
+      user._id = new mongoose.Types.ObjectId();
+      return await this.userModel.create(user);
     } catch (exception) {
       if (exception.code === 11000) {
         throw new ConflictException();
       }
       throw exception;
     }
-    return await this.findOneByEmail(user.email);
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {

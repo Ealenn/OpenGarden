@@ -23,7 +23,7 @@ export default () => {
     version: process.env.APP_VERSION,
     jwt: {
       secret: process.env.APP_SECRET,
-      ttl: '5m',
+      ttl: process.env.APP_JWT_TTL || '5m',
     },
     hash: {
       salt: parseInt(process.env.APP_HASH_SALT) || 10,
