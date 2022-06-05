@@ -7,11 +7,11 @@ import {
 } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
-import { Jwt } from '../../../../Auth/Models/jwt';
-import { JwtResponseBody } from '../jwt-response-body';
+import { User } from '../../../Users/Models/user';
+import { ProfileResponseBody } from './profile-response-body';
 
 @Injectable()
-export class JwtMapperProfile extends AutomapperProfile {
+export class ProfileMapperProfiles extends AutomapperProfile {
   constructor(@InjectMapper() mapper: Mapper) {
     super(mapper);
   }
@@ -20,11 +20,15 @@ export class JwtMapperProfile extends AutomapperProfile {
     return (mapper: Mapper) => {
       createMap(
         mapper,
-        Jwt,
-        JwtResponseBody,
+        User,
+        ProfileResponseBody,
         forMember(
-          (d) => d.access_token,
-          mapFrom((s) => s.access_token),
+          (d) => d.id,
+          mapFrom((s) => s._id),
+        ),
+        forMember(
+          (d) => d.username,
+          mapFrom((s) => s.username),
         ),
       );
     };

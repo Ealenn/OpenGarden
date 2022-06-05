@@ -2,7 +2,7 @@ import { classes } from '@automapper/classes';
 import { AutomapperModule } from '@automapper/nestjs';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthModule } from '../../../src/Auth/auth.module';
-import { ProfileMapperProfile } from '../../../src/Controllers/Profiles/Models/Mappers/profile-mapper-profile';
+import { ProfileMapperProfiles } from '../../../src/Controllers/Profiles/Models/mapper-profiles';
 import { UsersModule } from '../../../src/Users/users.module';
 import { ProfilesController } from '../../../src/Controllers/Profiles/profiles.controller';
 import {
@@ -23,7 +23,7 @@ describe('ProfilesController', () => {
         AuthModule,
         UsersModule,
       ],
-      providers: [ProfileMapperProfile],
+      providers: [ProfileMapperProfiles],
       controllers: [ProfilesController],
     }).compile();
 

@@ -15,7 +15,6 @@ import { HashService } from '../../Auth/hash.service';
 
 @ApiTags('Account')
 @Controller('/account')
-@ApiResponse({ status: 400, description: 'Bad Request' })
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 429, description: 'Too Many Requests' })
 export class AccountController {
@@ -29,6 +28,7 @@ export class AccountController {
   @Public()
   @Post('login')
   @ApiResponse({ status: 200, type: JwtResponseBody })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   async postAuthLogin(@Body() loginRequestBody: LoginRequestBody) {
     const jwt = await this.authService.login(
       loginRequestBody.email,
@@ -40,6 +40,7 @@ export class AccountController {
   @Public()
   @Post('register')
   @ApiResponse({ status: 200, type: ProfileResponseBody })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 409, description: 'Conflict' })
   async postAuthRegister(@Body() registerRequestBody: RegisterRequestBody) {
     const createUser: User = {

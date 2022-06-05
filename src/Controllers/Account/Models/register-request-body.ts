@@ -20,5 +20,6 @@ export class RegisterRequestBody {
 
   @ApiProperty()
   @IsNotEmpty()
+  @Length(8, 30)
   password: string;
 }

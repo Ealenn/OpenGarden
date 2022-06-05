@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AccountController } from './Account/account.controller';
-import { JwtMapperProfile } from './Account/Models/Mappers/jwt-mapper-profile';
-import { ProfileMapperProfile } from './Profiles/Models/Mappers/profile-mapper-profile';
+import { AccountMapperProfiles } from './Account/Models/mapper-profiles';
+import { ProfileMapperProfiles } from './Profiles/Models/mapper-profiles';
 import { ProfilesController } from './Profiles/profiles.controller';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
@@ -20,7 +20,7 @@ import { join } from 'path';
     AuthModule,
     UsersModule,
   ],
-  providers: [JwtMapperProfile, ProfileMapperProfile],
+  providers: [AccountMapperProfiles, ProfileMapperProfiles],
   controllers: [AccountController, ProfilesController],
 })
 export class ControllersModule {}

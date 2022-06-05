@@ -15,7 +15,6 @@ import { ApiResponse } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('Profiles')
-@ApiResponse({ status: 400, description: 'Bad Request' })
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 429, description: 'Too Many Requests' })
 @Controller('profiles')
@@ -33,6 +32,7 @@ export class ProfilesController {
 
   @Get(':id')
   @ApiResponse({ status: 200, type: ProfileResponseBody })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   async getProfile(@Param('id') id: string) {
     const user = await this.usersService.findOneById(id);
     if (!user) {
