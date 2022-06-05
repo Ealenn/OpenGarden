@@ -24,7 +24,7 @@ export class ProfileMapperProfiles extends AutomapperProfile {
         ProfileResponseBody,
         forMember(
           (d) => d.id,
-          mapFrom((s) => s._id),
+          mapFrom((s) => s._id.toString()),
         ),
         forMember(
           (d) => d.username,

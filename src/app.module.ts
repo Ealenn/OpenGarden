@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './Auth/jwt-auth.guard';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { ControllersModule } from './Controllers/controllers.module';
+import { EntitiesModule } from './Entities/entities.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ControllersModule } from './Controllers/controllers.module';
       }),
     }),
     ControllersModule,
+    EntitiesModule,
   ],
   providers: [
     {

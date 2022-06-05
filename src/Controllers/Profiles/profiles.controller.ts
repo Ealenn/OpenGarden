@@ -26,7 +26,7 @@ export class ProfilesController {
 
   @Get('me')
   @ApiResponse({ status: 200, type: ProfileResponseBody })
-  getProfileMe(@Request() req) {
+  getMyProfile(@Request() req) {
     return this.mapper.map(req.user, User, ProfileResponseBody);
   }
 

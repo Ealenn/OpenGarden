@@ -9,6 +9,9 @@ import { AuthModule } from '../Auth/auth.module';
 import { UsersModule } from '../Users/users.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { PlantsController } from './Plants/plants.controller';
+import { PlantMapperProfiles } from './Plants/Models/mapper-profile';
+import { EntitiesModule } from '../Entities/entities.module';
 
 @Module({
   imports: [
@@ -19,8 +22,13 @@ import { join } from 'path';
     AutomapperModule.forRoot({ strategyInitializer: classes() }),
     AuthModule,
     UsersModule,
+    EntitiesModule,
   ],
-  providers: [AccountMapperProfiles, ProfileMapperProfiles],
-  controllers: [AccountController, ProfilesController],
+  providers: [
+    AccountMapperProfiles,
+    ProfileMapperProfiles,
+    PlantMapperProfiles,
+  ],
+  controllers: [AccountController, ProfilesController, PlantsController],
 })
 export class ControllersModule {}
