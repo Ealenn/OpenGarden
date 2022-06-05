@@ -19,7 +19,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/e2e/jest-e2e.json"
+    "test:e2e": "jest --config ./test/e2e/jest-e2e.json --detectOpenHandles --forceExit"
   },
   "homepage": "https://github.com/Ealenn/OpenGarden",
   "repository": {
@@ -33,10 +33,27 @@
     "node": "16.15.1"
   },
   "dependencies": {
+    "@automapper/classes": "^8.x.x",
+    "@automapper/core": "^8.x.x",
+    "@automapper/nestjs": "^8.x.x",
+    "@automapper/pojos": "^8.x.x",
     "@nestjs/common": "^8.x.x",
+    "@nestjs/config": "^2.x.x",
     "@nestjs/core": "^8.x.x",
+    "@nestjs/jwt": "^8.0.1",
+    "@nestjs/mongoose": "^9.x.x",
+    "@nestjs/passport": "^8.x.x",
     "@nestjs/platform-express": "^8.x.x",
+    "@nestjs/serve-static": "^2.2.2",
     "@nestjs/swagger": "^5.x.x",
+    "@nestjs/throttler": "^2.x.x",
+    "bcrypt": "^5.x.x",
+    "class-transformer": "^0.5.x",
+    "class-validator": "^0.13.x",
+    "mongoose": "^6.x.x",
+    "passport": "^0.5.x",
+    "passport-jwt": "^4.x.x",
+    "passport-local": "^1.x.x",
     "reflect-metadata": "^0.1.x",
     "rimraf": "^3.x.x",
     "rxjs": "^7.x.x",
@@ -46,9 +63,12 @@
     "@nestjs/cli": "^8.x.x",
     "@nestjs/schematics": "^8.x.x",
     "@nestjs/testing": "^8.x.x",
+    "@types/bcrypt": "^5.x.x",
     "@types/express": "^4.x.x",
     "@types/jest": "^27.x.x",
     "@types/node": "^17.x.x",
+    "@types/passport-jwt": "^3.x.x",
+    "@types/passport-local": "^1.x.x",
     "@types/supertest": "^2.x.x",
     "@typescript-eslint/eslint-plugin": "^5.x.x",
     "@typescript-eslint/parser": "^5.x.x",
@@ -56,6 +76,7 @@
     "eslint-config-prettier": "^8.x.x",
     "eslint-plugin-prettier": "^4.x.x",
     "jest": "^27.x.x",
+    "mongodb-memory-server": "^8.x.x",
     "prettier": "^2.x.x",
     "source-map-support": "^0.5.x",
     "supertest": "^6.x.x",
@@ -71,7 +92,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "./test",
+    "rootDir": "./test/unit",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -79,7 +100,7 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "../../coverage",
     "testEnvironment": "node"
   }
 }

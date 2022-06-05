@@ -1,7 +1,8 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const currentPackage = require('../package.json');
@@ -11,8 +12,11 @@ const currentPackage = require('../package.json');
  */
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+  const config = app.get(ConfigService);
+
   await bootstrapSwagger(app);
-  await app.listen(process.env.APP_PORT || 8080);
+  app.useGlobalPipes(new ValidationPipe());
+  await app.listen(config.getOrThrow<number>('port'));
 }
 
 /**
@@ -29,10 +33,14 @@ async function bootstrapSwagger(app: INestApplication): Promise<void> {
     .setDescription(currentPackage.description)
     .setVersion(process.env.APP_VERSION || currentPackage.version)
     .setLicense(currentPackage.license, currentPackage.licenseUrl)
-    .setExternalDoc('GitHub Repository', currentPackage.homepage)
+    .setExternalDoc(currentPackage.homepage, currentPackage.homepage)
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/', app, document);
+  SwaggerModule.setup('/', app, document, {
+    customfavIcon: '/static/favicon.ico',
+    customSiteTitle: appName,
+  });
 }
 
 /**
