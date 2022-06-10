@@ -1,9 +1,8 @@
 name: "Deploy Auto"
 
 on:
-  push:
-    tags:
-    - '*'
+  release:
+    types: [published]
 
 jobs:
   heroku:
