@@ -10,7 +10,7 @@ export class PlantsSearchRequestQuery extends BaseQueryPagination {
   @IsString()
   @Matches('^[a-z0-9_-]{0,30}$')
   commonName?: string;
-git checkout -b 
+
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
