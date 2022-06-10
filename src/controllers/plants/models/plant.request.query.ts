@@ -1,19 +1,38 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MaxLength, MinLength, IsOptional } from 'class-validator';
+import { IsString, IsOptional, Matches } from 'class-validator';
+import { Country } from '../../../entities/countries/models/countries.entity';
+import { PlantPrecocity } from '../../../entities/plants/models/plant.entity';
 import { BaseQueryPagination } from '../../base.query.pagination';
 
 export class PlantsSearchRequestQuery extends BaseQueryPagination {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
-  @MaxLength(100)
-  @MinLength(1)
+  @Matches('^[a-z0-9_-]{0,30}$')
   commonName?: string;
+git checkout -b 
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  @Matches('^[a-z0-9_-]{0,30}$')
+  variety?: string;
+
+  @ApiProperty({ required: false, enum: Country })
+  @IsOptional()
+  origin?: Country;
 
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
-  @MaxLength(100)
-  @MinLength(1)
-  variety?: string;
+  @Matches('^[a-z0-9_-]{0,30}$')
+  family?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @ApiProperty({ required: false, enum: PlantPrecocity })
+  @IsOptional()
+  precocity?: PlantPrecocity;
 }

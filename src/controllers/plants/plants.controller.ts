@@ -62,13 +62,13 @@ export class PlantsController {
   @Get()
   @ApiResponse({ status: 200, type: PlantSearchResponseBody })
   async getPlants(@Query() plantsSearchRequestQuery: PlantsSearchRequestQuery) {
+    const { limit, offset, ...filters } = plantsSearchRequestQuery;
     const plants = await this.plantsService.search({
       pagination: {
-        limit: plantsSearchRequestQuery.limit,
-        offset: plantsSearchRequestQuery.offset,
+        limit,
+        offset,
       },
-      commonName: plantsSearchRequestQuery.commonName,
-      variety: plantsSearchRequestQuery.variety,
+      ...filters,
     });
     const result: PlantSearchResponseBody = {
       plants: this.mapper.mapArray(plants, Plant, PlantResponseBody),

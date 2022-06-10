@@ -25,7 +25,13 @@ async function bootstrap(): Promise<void> {
     new ValidationPipe({
       transform: true,
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
-        return new BadRequestException(validationErrors);
+        return new BadRequestException(
+          validationErrors.map((validationError) => ({
+            value: validationError.value,
+            property: validationError.property,
+            constraints: validationError.constraints,
+          })),
+        );
       },
     }),
   );

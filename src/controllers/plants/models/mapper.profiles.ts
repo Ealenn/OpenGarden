@@ -9,6 +9,7 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Plant } from '../../../entities/plants/models/plant.entity';
 import { PlantResponseBody } from './plant.response.body';
+import { escapeHtml } from 'xss';
 
 @Injectable()
 export class PlantMapperProfiles extends AutomapperProfile {
@@ -28,11 +29,27 @@ export class PlantMapperProfiles extends AutomapperProfile {
         ),
         forMember(
           (d) => d.commonName,
-          mapFrom((s) => s.commonName),
+          mapFrom((s) => escapeHtml(s.commonName)),
         ),
         forMember(
           (d) => d.variety,
-          mapFrom((s) => s.variety),
+          mapFrom((s) => escapeHtml(s.variety)),
+        ),
+        forMember(
+          (d) => d.family,
+          mapFrom((s) => escapeHtml(s.family)),
+        ),
+        forMember(
+          (d) => d.origin,
+          mapFrom((s) => s.origin),
+        ),
+        forMember(
+          (d) => d.description,
+          mapFrom((s) => escapeHtml(s.description)),
+        ),
+        forMember(
+          (d) => d.precocity,
+          mapFrom((s) => s.precocity),
         ),
         forMember(
           (d) => d.createdBy,
