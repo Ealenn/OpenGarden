@@ -1,11 +1,11 @@
-name: NodeJS Linter
+name: "NodeJS Linter"
 
 on:
   pull_request:
     branches: ['*']
 
 jobs:
-  build:
+  linter:
     runs-on: ubuntu-latest
     strategy:
       matrix:

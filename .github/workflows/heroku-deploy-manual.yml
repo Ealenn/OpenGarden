@@ -1,10 +1,10 @@
-name: Deploy - Manual
+name: "Deploy Manual"
 
 on: 
   workflow_dispatch:
 
 jobs:
-  build:
+  heroku:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

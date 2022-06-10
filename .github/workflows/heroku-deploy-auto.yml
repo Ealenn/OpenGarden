@@ -1,4 +1,4 @@
-name: Deploy - Auto
+name: "Deploy Auto"
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     - '*'
 
 jobs:
-  build:
+  heroku:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
