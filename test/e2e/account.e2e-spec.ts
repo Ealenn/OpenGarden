@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../../src/app.module';
-import { rootConfigTestModule } from '../unit/helpers/config-test-module';
+import { configurationHelperModule } from '../unit/helpers/configuration.helper.module';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -17,7 +17,7 @@ describe('Account', () => {
         MongooseModule.forRoot(mongod.getUri(), {
           connectionName: (new Date().getTime() * Math.random()).toString(16),
         }),
-        rootConfigTestModule(mongod.getUri()),
+        configurationHelperModule(mongod.getUri()),
         AppModule,
       ],
     }).compile();

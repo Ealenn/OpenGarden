@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './Auth/auth.module';
-import { UsersModule } from './Users/users.module';
-import configuration from './Config/configuration';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import configuration from './configuration/configuration';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './Auth/jwt-auth.guard';
+import { JwtGuard } from './auth/jwt.guard';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
-import { ControllersModule } from './Controllers/controllers.module';
-import { EntitiesModule } from './Entities/entities.module';
+import { ControllersModule } from './controllers/controllers.module';
+import { EntitiesModule } from './entities/entities.module';
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { EntitiesModule } from './Entities/entities.module';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: JwtGuard,
     },
     {
       provide: APP_GUARD,

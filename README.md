@@ -9,15 +9,49 @@
 
 This API provides lots of information about plantations, their needs, and sowing advice.
 
+[![Roadmap](https://img.shields.io/badge/view-roadmap-blue?logo=trello&style=for-the-badge)](https://github.com/users/Ealenn/projects/3)
+[![Swagger](https://img.shields.io/badge/view-swagger_ui-green?logo=swagger&style=for-the-badge)](https://opengarden.herokuapp.com/)
+
 - [Open Garden](#open-garden)
   - [Description](#description)
+  - [Integration](#integration)
+    - [Rate Limiting](#rate-limiting)
+    - [JWT Ticket](#jwt-ticket)
   - [Development](#development)
     - [Installation](#installation)
     - [Running the app](#running-the-app)
     - [Test](#test)
-  - [Release notes](#release-notes)
-  - [Contributing](#contributing)
+  - [Roadmap](#roadmap)
+    - [Release notes](#release-notes)
   - [Versioning](#versioning)
+  - [Contributing](#contributing)
+
+## Integration
+
+### Rate Limiting
+
+This API is protected by throttling.
+
+You can compute your remaining requests via the responses headers.
+
+| Header                   | Description                              | Example            |
+|--------------------------|------------------------------------------|--------------------|
+|`x-ratelimit-limit`       | the maximum number of requests           |`20`|
+|`x-ratelimit-remaining`   | remaining requests                       |`18`|
+|`x-ratelimit-reset`       | time to reset the counter                |`30`|
+
+### JWT Ticket
+
+The HTTP `Authorization` request header is required to authenticate a user on many endpoints.
+
+This header must be provided like : 
+
+```sh
+curl -X 'GET' ...
+  -H 'Authorization: Bearer {TOKEN}'
+```
+
+To obtain this `{TOKEN}` you must call the endpoint `/account/login` (cf [SwaggerUI](https://opengarden.herokuapp.com)).
 
 ## Development
 ### Installation
@@ -52,17 +86,18 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Release notes
+## Roadmap
 
-```bash
-git log --pretty=oneline
-```
+View the [OpenGarden Public Roadmap](https://github.com/users/Ealenn/projects/3)
 
-## Contributing
+### Release notes
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+For the versions available, see the [tags on this repository](https://github.com/Ealenn/OpenGarden/releases).
 
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning.
-For the versions available, see the [tags on this repository](https://github.com/Ealenn/OpenGarden/releases).
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
