@@ -9,6 +9,7 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { User } from '../../../users/models/user.entity';
 import { ProfileResponseBody } from './profile.response.body';
+import { escapeHtml } from 'xss';
 
 @Injectable()
 export class ProfileMapperProfiles extends AutomapperProfile {
@@ -28,7 +29,7 @@ export class ProfileMapperProfiles extends AutomapperProfile {
         ),
         forMember(
           (d) => d.username,
-          mapFrom((s) => s.username),
+          mapFrom((s) => escapeHtml(s.username)),
         ),
       );
     };

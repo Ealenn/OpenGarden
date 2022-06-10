@@ -9,6 +9,10 @@ import { BaseEntityService } from '../base.entity.service';
 export class PlantSearchParams extends BaseSearchParams {
   commonName?: string;
   variety?: string;
+  family?: string;
+  origin?: string;
+  precocity?: string;
+  createdBy?: string;
 }
 
 @Injectable()
@@ -36,29 +40,12 @@ export class PlantsService extends BaseEntityService {
   }
 
   async search(params: PlantSearchParams): Promise<Plant[]> {
-    let filters = {};
-
-    if (params.commonName) {
-      filters = {
-        ...filters,
-        commonName: {
-          $regex: this._escapeStringRegex(params.commonName),
-        },
-      };
-    }
-
-    if (params.variety) {
-      filters = {
-        ...filters,
-        variety: {
-          $regex: this._escapeStringRegex(params.variety),
-        },
-      };
-    }
+    const { pagination, ...filters } = params;
+    const findParam = this._generateFilters(filters);
 
     return await this.plantModel
-      .find(filters)
-      .skip(params.pagination.offset)
-      .limit(params.pagination.limit);
+      .find(findParam)
+      .skip(pagination.offset)
+      .limit(pagination.limit);
   }
 }

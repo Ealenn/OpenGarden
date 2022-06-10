@@ -40,7 +40,7 @@ describe('Account', () => {
         .post('/account/login')
         .send({
           email: 'fake@domain.com',
-          password: 'fakePassword',
+          password: 'fakeP@ssword0',
         })
         .expect(401);
     });
@@ -50,7 +50,7 @@ describe('Account', () => {
         .post('/account/login')
         .send({
           email: 'fake',
-          password: 'fakePassword',
+          password: 'fakeP@ssword0',
         })
         .expect(400);
     });

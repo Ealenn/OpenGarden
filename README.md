@@ -17,6 +17,7 @@ This API provides lots of information about plantations, their needs, and sowing
   - [Integration](#integration)
     - [Rate Limiting](#rate-limiting)
     - [JWT Ticket](#jwt-ticket)
+    - [Bad Request Handling](#bad-request-handling)
   - [Development](#development)
     - [Installation](#installation)
     - [Running the app](#running-the-app)
@@ -52,6 +53,26 @@ curl -X 'GET' ...
 ```
 
 To obtain this `{TOKEN}` you must call the endpoint `/account/login` (cf [SwaggerUI](https://opengarden.herokuapp.com)).
+
+### Bad Request Handling
+
+```json
+{
+  "statusCode": 400,
+  "message": [
+    {
+      "value": "0",
+      "property": "example",
+      "constraints": {
+        "matches": "example must match ^/[a-z0-9_-]/$ regular expression",
+        "isLength": "example must be longer than or equal to 3 characters",
+        "isString": "example must be a string"
+      }
+    }
+  ],
+  "error": "Bad Request"
+}
+```
 
 ## Development
 ### Installation

@@ -58,7 +58,8 @@
     "reflect-metadata": "^0.1.x",
     "rimraf": "^3.x.x",
     "rxjs": "^7.x.x",
-    "swagger-ui-express": "^4.x.x"
+    "swagger-ui-express": "^4.x.x",
+    "xss": "^1.x.x"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.x.x",
