@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { PlantType } from '../../../entities/plant.types/models/plant.type.entity';
 import { PlantTypeClassificationResponseBody, PlantTypeResponseBody } from './plant.type.response.body';
 import { escapeHtml } from 'xss';
-import { PlantTypeClassification } from 'src/entities/plant.types/models/plant.type.classification';
+import { PlantTypeClassification } from '../../../entities/plant.types/models/plant.type.classification';
 
 @Injectable()
 export class PlantTypeMapperProfiles extends AutomapperProfile {
