@@ -1,25 +1,15 @@
-import {
-  Body,
-  Request,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Request, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { ApiResponse } from '@nestjs/swagger';
 import { PlantsService } from '../../entities/plants/plants.service';
 import { Plant } from '../../entities/plants/models/plant.entity';
-import {
-  PlantResponseBody,
-  PlantSearchResponseBody,
-} from './models/plant.response.body';
+import { PlantResponseBody, PlantSearchResponseBody } from './models/plant.response.body';
 import { CreatePlantRequestBody } from './models/plant.request.body';
 import { PlantsSearchRequestQuery } from './models/plant.request.query';
+import mongoose from 'mongoose';
+import { ErrorsRequestBody } from '../models/errors.response.body';
 
 @ApiBearerAuth()
 @ApiTags('Plants')
@@ -27,20 +17,23 @@ import { PlantsSearchRequestQuery } from './models/plant.request.query';
 @ApiResponse({ status: 429, description: 'Too Many Requests' })
 @Controller('plants')
 export class PlantsController {
-  constructor(
-    private plantsService: PlantsService,
-    @InjectMapper() private mapper: Mapper,
-  ) {}
+  constructor(private plantsService: PlantsService, @InjectMapper() private mapper: Mapper) {}
 
   @Post()
   @ApiResponse({ status: 200, type: PlantResponseBody })
-  async createPlant(
-    @Request() req,
-    @Body() createPlantRequestBody: CreatePlantRequestBody,
-  ) {
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: ErrorsRequestBody,
+  })
+  async createPlant(@Request() req, @Body() createPlantRequestBody: CreatePlantRequestBody) {
     const createPlant: Plant = {
       ...createPlantRequestBody,
       _id: null,
+      requirement: {
+        ...createPlantRequestBody.requirement,
+        floors: createPlantRequestBody.requirement.floors.map((floor) => new mongoose.Types.ObjectId(floor)),
+      },
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: req.user._id,

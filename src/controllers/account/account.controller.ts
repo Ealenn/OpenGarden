@@ -12,6 +12,7 @@ import { ProfileResponseBody } from '../profiles/models/profile.response.body';
 import { UsersService } from '../../users/users.service';
 import { RegisterRequestBody } from './models/register.request.body';
 import { HashService } from '../../auth/hash.service';
+import { ErrorsRequestBody } from '../models/errors.response.body';
 
 @ApiTags('Account')
 @Controller('/account')
@@ -28,19 +29,24 @@ export class AccountController {
   @Public()
   @Post('login')
   @ApiResponse({ status: 200, type: JwtResponseBody })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: ErrorsRequestBody,
+  })
   async login(@Body() loginRequestBody: LoginRequestBody) {
-    const jwt = await this.authService.login(
-      loginRequestBody.email,
-      loginRequestBody.password,
-    );
+    const jwt = await this.authService.login(loginRequestBody.email, loginRequestBody.password);
     return this.mapper.map(jwt, Jwt, JwtResponseBody);
   }
 
   @Public()
   @Post('register')
   @ApiResponse({ status: 200, type: ProfileResponseBody })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: ErrorsRequestBody,
+  })
   @ApiResponse({ status: 409, description: 'Conflict' })
   async register(@Body() registerRequestBody: RegisterRequestBody) {
     const createUser: User = {

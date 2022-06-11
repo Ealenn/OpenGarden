@@ -13,13 +13,14 @@ export class PlantSearchParams extends BaseSearchParams {
   origin?: string;
   precocity?: string;
   createdBy?: string;
+  sunNeed?: string;
+  waterNeed?: string;
+  floors?: string[];
 }
 
 @Injectable()
 export class PlantsService extends BaseEntityService {
-  constructor(
-    @InjectModel(Plant.name) private plantModel: Model<PlantDocument>,
-  ) {
+  constructor(@InjectModel(Plant.name) private plantModel: Model<PlantDocument>) {
     super();
   }
 
@@ -36,16 +37,20 @@ export class PlantsService extends BaseEntityService {
   }
 
   async findOneById(id: string): Promise<Plant | undefined> {
-    return await this.plantModel.findOne({ id });
+    return await this.plantModel.findById(id);
   }
 
   async search(params: PlantSearchParams): Promise<Plant[]> {
-    const { pagination, ...filters } = params;
-    const findParam = this._generateFilters(filters);
+    const { pagination, sunNeed, waterNeed, floors, ...filters } = params;
+    let findParam = this._generateFilters(filters);
+    findParam = this._generateFilter(findParam, 'requirement.water.needs', waterNeed);
+    findParam = this._generateFilter(findParam, 'requirement.sun.needs', sunNeed);
+    findParam = this._generateFilter(
+      findParam,
+      'requirement.floors',
+      floors?.map((floor) => new mongoose.Types.ObjectId(floor)),
+    );
 
-    return await this.plantModel
-      .find(findParam)
-      .skip(pagination.offset)
-      .limit(pagination.limit);
+    return await this.plantModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
   }
 }

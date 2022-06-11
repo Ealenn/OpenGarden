@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { BaseEntity } from '../../base.entity';
+import { PlantRequirement } from './requirement.entity';
 
 export type PlantDocument = Plant & Document;
 
@@ -29,6 +30,9 @@ export class Plant extends BaseEntity {
 
   @Prop({ required: true, enum: PlantPrecocity })
   precocity: PlantPrecocity;
+
+  @Prop({ required: true, type: PlantRequirement })
+  requirement: PlantRequirement;
 }
 
 export const PlantSchema = SchemaFactory.createForClass(Plant);

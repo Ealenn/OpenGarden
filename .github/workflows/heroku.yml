@@ -1,7 +1,9 @@
-name: "Deploy Manual"
+name: "Heroku"
 
-on: 
-  workflow_dispatch:
+on:
+  push:
+    tags:
+       - '*'
 
 jobs:
   heroku:

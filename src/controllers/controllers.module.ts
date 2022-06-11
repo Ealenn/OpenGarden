@@ -12,6 +12,9 @@ import { join } from 'path';
 import { PlantsController } from './plants/plants.controller';
 import { PlantMapperProfiles } from './plants/models/mapper.profiles';
 import { EntitiesModule } from '../entities/entities.module';
+import { FloorMapperProfiles } from './floors/models/mapper.profiles';
+import { FloorsController } from './floors/floors.controller';
+import { FloorExistsRule } from './floors/constraint/floor.exists.rule';
 
 @Module({
   imports: [
@@ -28,7 +31,14 @@ import { EntitiesModule } from '../entities/entities.module';
     AccountMapperProfiles,
     ProfileMapperProfiles,
     PlantMapperProfiles,
+    FloorMapperProfiles,
+    FloorExistsRule,
   ],
-  controllers: [AccountController, ProfilesController, PlantsController],
+  controllers: [
+    AccountController,
+    ProfilesController,
+    PlantsController,
+    FloorsController,
+  ],
 })
 export class ControllersModule {}
