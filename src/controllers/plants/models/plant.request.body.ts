@@ -18,6 +18,7 @@ import { Country } from '../../../entities/countries/models/countries.entity';
 import { PlantPrecocity } from '../../../entities/plants/models/plant.entity';
 import { Type } from 'class-transformer';
 import { FloorExistsRule } from '../../floors/constraint/floor.exists.rule';
+import { PlantTypeExistsRule } from '../../plant.types/constraint/plant.types.exists.rule';
 
 export class CreatePlantRequirementWaterRequestBody {
   @ApiProperty({ required: true, enum: PlantRequirementWaterNeed })
@@ -65,8 +66,9 @@ export class CreatePlantRequirementRequestBody {
 export class CreatePlantRequestBody {
   @ApiProperty({ required: true })
   @IsString()
-  @Matches('^[a-z0-9_-]{3,30}$')
-  commonName: string;
+  @Matches(new RegExp('^[0-9a-fA-F]{24}$'))
+  @Validate(PlantTypeExistsRule)
+  plantType: string;
 
   @ApiProperty({ required: true })
   @IsString()
@@ -75,11 +77,6 @@ export class CreatePlantRequestBody {
 
   @ApiProperty({ required: true, enum: Country })
   origin: Country;
-
-  @ApiProperty({ required: true })
-  @IsString()
-  @Matches('^[a-z0-9_-]{3,30}$')
-  family: string;
 
   @ApiProperty({ required: true })
   @IsString()

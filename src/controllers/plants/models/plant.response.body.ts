@@ -35,6 +35,9 @@ export class PlantResponseBody {
   id: string;
 
   @ApiProperty()
+  plantType: string;
+
+  @ApiProperty()
   commonName: string;
 
   @ApiProperty()

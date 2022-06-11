@@ -20,7 +20,7 @@ export class PlantsController {
   constructor(private plantsService: PlantsService, @InjectMapper() private mapper: Mapper) {}
 
   @Post()
-  @ApiResponse({ status: 200, type: PlantResponseBody })
+  @ApiResponse({ status: 201, type: PlantResponseBody })
   @ApiResponse({
     status: 400,
     description: 'Bad Request',
@@ -30,6 +30,7 @@ export class PlantsController {
     const createPlant: Plant = {
       ...createPlantRequestBody,
       _id: null,
+      plantType: new mongoose.Types.ObjectId(createPlantRequestBody.plantType),
       requirement: {
         ...createPlantRequestBody.requirement,
         floors: createPlantRequestBody.requirement.floors.map((floor) => new mongoose.Types.ObjectId(floor)),
