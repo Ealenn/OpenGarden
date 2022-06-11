@@ -1,6 +1,6 @@
 import { Prop } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { User } from 'src/users/models/user.entity';
+import { User } from '../users/models/user.entity';
 
 export class BaseEntity {
   _id: mongoose.Types.ObjectId;
