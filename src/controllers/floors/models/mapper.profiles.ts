@@ -1,10 +1,4 @@
-import {
-  Mapper,
-  MappingProfile,
-  createMap,
-  forMember,
-  mapFrom,
-} from '@automapper/core';
+import { Mapper, MappingProfile, createMap, forMember, mapFrom } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Floor } from '../../../entities/floors/models/floor.entity';
@@ -37,7 +31,7 @@ export class FloorMapperProfiles extends AutomapperProfile {
         ),
         forMember(
           (d) => d.createdBy,
-          mapFrom((s) => s.createdBy),
+          mapFrom((s) => s.createdBy.toString()),
         ),
         forMember(
           (d) => d.createdAt,

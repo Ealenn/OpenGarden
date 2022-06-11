@@ -37,8 +37,6 @@ export class PlantRequirement {
   @Prop({ required: true })
   sun: PlantRequirementSun;
 
-  @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: Floor.name }],
-  })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Floor.name }] })
   floors: mongoose.Types.ObjectId[];
 }

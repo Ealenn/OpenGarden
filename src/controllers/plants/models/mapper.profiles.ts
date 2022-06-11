@@ -110,7 +110,7 @@ export class PlantMapperProfiles extends AutomapperProfile {
         ),
         forMember(
           (d) => d.createdBy,
-          mapFrom((s) => s.createdBy),
+          mapFrom((s) => s.createdBy.toString()),
         ),
         forMember(
           (d) => d.createdAt,
