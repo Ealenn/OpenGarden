@@ -1,4 +1,4 @@
-import { Controller, Body, Post } from '@nestjs/common';
+import { Controller, Body, Post, HttpCode } from '@nestjs/common';
 import { Public } from '../../auth/auth.module';
 import { Jwt } from '../../auth/models/jwt';
 import { AuthService } from '../../auth/auth.service';
@@ -28,6 +28,7 @@ export class AccountController {
 
   @Public()
   @Post('login')
+  @HttpCode(200)
   @ApiResponse({ status: 200, type: JwtResponseBody })
   @ApiResponse({
     status: 400,
@@ -36,12 +37,13 @@ export class AccountController {
   })
   async login(@Body() loginRequestBody: LoginRequestBody) {
     const jwt = await this.authService.login(loginRequestBody.email, loginRequestBody.password);
+
     return this.mapper.map(jwt, Jwt, JwtResponseBody);
   }
 
   @Public()
   @Post('register')
-  @ApiResponse({ status: 200, type: ProfileResponseBody })
+  @ApiResponse({ status: 201, type: ProfileResponseBody })
   @ApiResponse({
     status: 400,
     description: 'Bad Request',

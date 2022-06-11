@@ -41,13 +41,13 @@ export class BaseEntityService {
     value: string | string[] | mongoose.Types.ObjectId | mongoose.Types.ObjectId[],
   ): Record<string, mongoSearchObject> | null {
     if (!value || (Array.isArray(value) && value.length == 0)) {
-      return null;
+      return filters;
     }
 
     const result = { ...filters };
     const regexObject = this._generateRegexObject(value);
     if (!regexObject) {
-      return null;
+      return filters;
     }
 
     result[key] = regexObject;

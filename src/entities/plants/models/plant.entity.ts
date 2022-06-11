@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { PlantType } from '../../plant.types/models/plant.type.entity';
 import { BaseEntity } from '../../base.entity';
 import { PlantRequirement } from './requirement.entity';
 
@@ -13,17 +14,14 @@ export enum PlantPrecocity {
 
 @Schema()
 export class Plant extends BaseEntity {
-  @Prop({ required: true })
-  commonName: string;
+  @Prop({ required: true, type: [{ type: mongoose.Schema.Types.ObjectId, ref: PlantType.name }] })
+  plantType: mongoose.Types.ObjectId;
 
   @Prop({ required: true })
   variety: string;
 
   @Prop({ required: true })
   origin: string;
-
-  @Prop({ required: true })
-  family: string;
 
   @Prop({ required: true })
   description: string;

@@ -15,6 +15,9 @@ import { EntitiesModule } from '../entities/entities.module';
 import { FloorMapperProfiles } from './floors/models/mapper.profiles';
 import { FloorsController } from './floors/floors.controller';
 import { FloorExistsRule } from './floors/constraint/floor.exists.rule';
+import { PlantTypeMapperProfiles } from './plant.types/models/mapper.profiles';
+import { PlantTypesController } from './plant.types/plant.types.controller';
+import { PlantTypeExistsRule } from './plant.types/constraint/plant.types.exists.rule';
 
 @Module({
   imports: [
@@ -30,6 +33,8 @@ import { FloorExistsRule } from './floors/constraint/floor.exists.rule';
   providers: [
     AccountMapperProfiles,
     ProfileMapperProfiles,
+    PlantTypeMapperProfiles,
+    PlantTypeExistsRule,
     PlantMapperProfiles,
     FloorMapperProfiles,
     FloorExistsRule,
@@ -37,6 +42,7 @@ import { FloorExistsRule } from './floors/constraint/floor.exists.rule';
   controllers: [
     AccountController,
     ProfilesController,
+    PlantTypesController,
     PlantsController,
     FloorsController,
   ],

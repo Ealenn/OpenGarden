@@ -19,7 +19,7 @@ export class FloorsController {
   constructor(private floorsService: FloorsService, @InjectMapper() private mapper: Mapper) {}
 
   @Post()
-  @ApiResponse({ status: 200, type: FloorResponseBody })
+  @ApiResponse({ status: 201, type: FloorResponseBody })
   @ApiResponse({
     status: 400,
     description: 'Bad Request',

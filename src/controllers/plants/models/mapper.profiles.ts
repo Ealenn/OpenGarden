@@ -81,16 +81,12 @@ export class PlantMapperProfiles extends AutomapperProfile {
           mapFrom((s) => s._id.toString()),
         ),
         forMember(
-          (d) => d.commonName,
-          mapFrom((s) => escapeHtml(s.commonName)),
+          (d) => d.plantType,
+          mapFrom((s) => s.plantType.toString()),
         ),
         forMember(
           (d) => d.variety,
           mapFrom((s) => escapeHtml(s.variety)),
-        ),
-        forMember(
-          (d) => d.family,
-          mapFrom((s) => escapeHtml(s.family)),
         ),
         forMember(
           (d) => d.origin,

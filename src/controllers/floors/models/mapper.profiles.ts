@@ -23,7 +23,7 @@ export class FloorMapperProfiles extends AutomapperProfile {
         ),
         forMember(
           (d) => d.name,
-          mapFrom((s) => escapeHtml(s.name)),
+          mapFrom((s) => s.name),
         ),
         forMember(
           (d) => d.description,
