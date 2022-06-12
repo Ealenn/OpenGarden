@@ -5,6 +5,13 @@ export interface mongoSearchObject {
   $in?: string[];
   $elemMatch?: any;
   $contains?: string[];
+  $lte?: number;
+  $gte?: number;
+}
+
+export enum EntityFilterOption {
+  MIN = 'MIN',
+  MAX = 'MAX',
 }
 
 export class BaseEntityService {
@@ -38,19 +45,25 @@ export class BaseEntityService {
   protected _generateFilter(
     filters: Record<string, mongoSearchObject>,
     key: string,
-    value: string | string[] | mongoose.Types.ObjectId | mongoose.Types.ObjectId[],
+    value: string | string[] | mongoose.Types.ObjectId | mongoose.Types.ObjectId[] | number | number[],
+    option?: EntityFilterOption,
   ): Record<string, mongoSearchObject> | null {
     if (!value || (Array.isArray(value) && value.length == 0)) {
       return filters;
     }
 
     const result = { ...filters };
-    const regexObject = this._generateRegexObject(value);
+    const regexObject = this._generateRegexObject(value, option);
     if (!regexObject) {
       return filters;
     }
 
-    result[key] = regexObject;
+    if (result[key]) {
+      result[key] = Object.assign({}, result[key], regexObject);
+    } else {
+      result[key] = regexObject;
+    }
+
     return result;
   }
 
@@ -59,7 +72,8 @@ export class BaseEntityService {
    * @returns {mongoSearchObject} { $regex: 'data' }
    */
   protected _generateRegexObject(
-    value: string | string[] | mongoose.Types.ObjectId | mongoose.Types.ObjectId[],
+    value: string | string[] | mongoose.Types.ObjectId | mongoose.Types.ObjectId[] | number | number[],
+    option?: EntityFilterOption,
   ): mongoSearchObject | null {
     switch (typeof value) {
       case 'string':
@@ -67,6 +81,26 @@ export class BaseEntityService {
           $regex: this._escapeStringRegex(value),
         };
         return stringRegexObject;
+      case 'number':
+        if (option) {
+          if (option === EntityFilterOption.MIN) {
+            const numberMinRegexObject: mongoSearchObject = {
+              $gte: value,
+            };
+            return numberMinRegexObject;
+          }
+          if (option === EntityFilterOption.MAX) {
+            const numberMaxRegexObject: mongoSearchObject = {
+              $lte: value,
+            };
+            return numberMaxRegexObject;
+          }
+        } else {
+          const numberRegexObject: mongoSearchObject = {
+            $regex: value.toString(),
+          };
+          return numberRegexObject;
+        }
       case 'object':
         const arrayRegexObject: mongoSearchObject = {
           $elemMatch: {
