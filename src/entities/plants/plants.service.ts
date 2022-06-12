@@ -4,18 +4,23 @@ import { Plant, PlantDocument } from './models/plant.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { ConflictException } from '@nestjs/common';
 import { BaseSearchParams } from '../base.search.params';
-import { BaseEntityService } from '../base.entity.service';
+import { BaseEntityService, EntityFilterOption } from '../base.entity.service';
 
 export class PlantSearchParams extends BaseSearchParams {
-  commonName?: string;
   variety?: string;
-  family?: string;
   origin?: string;
   precocity?: string;
   createdBy?: string;
   sunNeed?: string;
   waterNeed?: string;
   floors?: string[];
+  plantTypes?: string[];
+  cultureTypes?: string[];
+  minSpacingBetweenPlants?: number;
+  maxSpacingBetweenPlants?: number;
+  sowingPeriod?: number[];
+  growingOnPeriod?: number[];
+  harvestPeriod?: number[];
 }
 
 @Injectable()
@@ -41,7 +46,21 @@ export class PlantsService extends BaseEntityService {
   }
 
   async search(params: PlantSearchParams): Promise<Plant[]> {
-    const { pagination, sunNeed, waterNeed, floors, ...filters } = params;
+    const {
+      pagination,
+      sunNeed,
+      waterNeed,
+      floors,
+      plantTypes,
+      cultureTypes,
+      minSpacingBetweenPlants,
+      maxSpacingBetweenPlants,
+      sowingPeriod,
+      growingOnPeriod,
+      harvestPeriod,
+      ...filters
+    } = params;
+
     let findParam = this._generateFilters(filters);
     findParam = this._generateFilter(findParam, 'requirement.water.needs', waterNeed);
     findParam = this._generateFilter(findParam, 'requirement.sun.needs', sunNeed);
@@ -50,7 +69,27 @@ export class PlantsService extends BaseEntityService {
       'requirement.floors',
       floors?.map((floor) => new mongoose.Types.ObjectId(floor)),
     );
-
+    findParam = this._generateFilter(
+      findParam,
+      'plantType',
+      plantTypes?.map((plantType) => new mongoose.Types.ObjectId(plantType)),
+    );
+    findParam = this._generateFilter(findParam, 'culture.cultureTypes', cultureTypes);
+    findParam = this._generateFilter(
+      findParam,
+      'culture.spacingBetweenPlants',
+      minSpacingBetweenPlants,
+      EntityFilterOption.MIN,
+    );
+    findParam = this._generateFilter(
+      findParam,
+      'culture.spacingBetweenPlants',
+      maxSpacingBetweenPlants,
+      EntityFilterOption.MAX,
+    );
+    findParam = this._generateFilter(findParam, 'culture.sowingPeriod', sowingPeriod);
+    findParam = this._generateFilter(findParam, 'culture.growingOnPeriod', growingOnPeriod);
+    findParam = this._generateFilter(findParam, 'culture.harvestPeriod', harvestPeriod);
     return await this.plantModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
   }
 }

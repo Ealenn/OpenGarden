@@ -1,12 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  ArrayUnique,
   IsArray,
   IsDefined,
   IsEnum,
+  IsInt,
   IsNotEmptyObject,
   IsObject,
   IsString,
   Matches,
+  Max,
+  Min,
   Validate,
   ValidateNested,
 } from 'class-validator';
@@ -19,6 +23,7 @@ import { PlantPrecocity } from '../../../entities/plants/models/plant.entity';
 import { Type } from 'class-transformer';
 import { FloorExistsRule } from '../../floors/constraint/floor.exists.rule';
 import { PlantTypeExistsRule } from '../../plant.types/constraint/plant.types.exists.rule';
+import { PlantCultureType } from '../../../entities/plants/models/culture.entity';
 
 export class CreatePlantRequirementWaterRequestBody {
   @ApiProperty({ required: true, enum: PlantRequirementWaterNeed })
@@ -63,6 +68,46 @@ export class CreatePlantRequirementRequestBody {
   floors: string[];
 }
 
+export class CreatePlantCultureRequestBody {
+  @ApiProperty({ required: true, enum: PlantCultureType, isArray: true })
+  @IsArray()
+  @IsEnum(PlantCultureType, { each: true })
+  cultureTypes: PlantCultureType[];
+
+  @ApiProperty({ required: true })
+  @IsString()
+  description: string;
+
+  @ApiProperty({ required: true, type: Number })
+  @IsInt()
+  @Min(1)
+  spacingBetweenPlants: number;
+
+  @ApiProperty({ required: true, type: Number, isArray: true })
+  @IsArray()
+  @ArrayUnique()
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  @Max(12, { each: true })
+  sowingPeriod: number[];
+
+  @ApiProperty({ required: true, type: Number, isArray: true })
+  @IsArray()
+  @ArrayUnique()
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  @Max(12, { each: true })
+  growingOnPeriod: number[];
+
+  @ApiProperty({ required: true, type: Number, isArray: true })
+  @IsArray()
+  @ArrayUnique()
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  @Max(12, { each: true })
+  harvestPeriod: number[];
+}
+
 export class CreatePlantRequestBody {
   @ApiProperty({ required: true })
   @IsString()
@@ -92,4 +137,12 @@ export class CreatePlantRequestBody {
   @ValidateNested()
   @Type(() => CreatePlantRequirementRequestBody)
   requirement: CreatePlantRequirementRequestBody;
+
+  @ApiProperty({ required: true, type: CreatePlantCultureRequestBody })
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => CreatePlantCultureRequestBody)
+  culture: CreatePlantCultureRequestBody;
 }

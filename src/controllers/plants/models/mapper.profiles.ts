@@ -3,6 +3,7 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Plant } from '../../../entities/plants/models/plant.entity';
 import {
+  PlantCultureResponseBody,
   PlantRequirementResponseBody,
   PlantRequirementSunResponseBody,
   PlantRequirementWaterResponseBody,
@@ -14,6 +15,7 @@ import {
   PlantRequirementSun,
   PlantRequirementWater,
 } from '../../../entities/plants/models/requirement.entity';
+import { PlantCulture } from '../../../entities/plants/models/culture.entity';
 
 @Injectable()
 export class PlantMapperProfiles extends AutomapperProfile {
@@ -70,6 +72,38 @@ export class PlantMapperProfiles extends AutomapperProfile {
         ),
       );
       /**
+       * Culture
+       */
+      createMap(
+        mapper,
+        PlantCulture,
+        PlantCultureResponseBody,
+        forMember(
+          (d) => d.cultureTypes,
+          mapFrom((s) => s.cultureTypes),
+        ),
+        forMember(
+          (d) => d.description,
+          mapFrom((s) => escapeHtml(s.description)),
+        ),
+        forMember(
+          (d) => d.spacingBetweenPlants,
+          mapFrom((s) => s.spacingBetweenPlants),
+        ),
+        forMember(
+          (d) => d.sowingPeriod,
+          mapFrom((s) => s.sowingPeriod),
+        ),
+        forMember(
+          (d) => d.growingOnPeriod,
+          mapFrom((s) => s.growingOnPeriod),
+        ),
+        forMember(
+          (d) => d.harvestPeriod,
+          mapFrom((s) => s.harvestPeriod),
+        ),
+      );
+      /**
        * Plant
        */
       createMap(
@@ -103,6 +137,10 @@ export class PlantMapperProfiles extends AutomapperProfile {
         forMember(
           (d) => d.requirement,
           mapFrom((s) => mapper.map(s.requirement, PlantRequirement, PlantRequirementResponseBody)),
+        ),
+        forMember(
+          (d) => d.culture,
+          mapFrom((s) => mapper.map(s.culture, PlantCulture, PlantCultureResponseBody)),
         ),
         forMember(
           (d) => d.createdBy,
