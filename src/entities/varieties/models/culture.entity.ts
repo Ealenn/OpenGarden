@@ -1,14 +1,14 @@
 import { Prop } from '@nestjs/mongoose';
 
-export enum PlantCultureType {
+export enum VarietyCultureType {
   DIRECT_SOW = 'DIRECT_SOW',
   GREEN_HOUSE = 'GREEN_HOUSE',
   POT = 'POT',
 }
 
-export class PlantCulture {
-  @Prop({ required: true, enum: PlantCultureType })
-  cultureTypes: PlantCultureType[];
+export class VarietyCulture {
+  @Prop({ required: true, enum: VarietyCultureType })
+  cultureTypes: VarietyCultureType[];
 
   @Prop({ required: true })
   description: string;

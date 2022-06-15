@@ -2,20 +2,9 @@ import { Mapper, MappingProfile, createMap, forMember, mapFrom } from '@automapp
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Plant } from '../../../entities/plants/models/plant.entity';
-import {
-  PlantCultureResponseBody,
-  PlantRequirementResponseBody,
-  PlantRequirementSunResponseBody,
-  PlantRequirementWaterResponseBody,
-  PlantResponseBody,
-} from './plant.response.body';
+import { PlantClassificationResponseBody, PlantResponseBody } from './plant.response.body';
 import { escapeHtml } from 'xss';
-import {
-  PlantRequirement,
-  PlantRequirementSun,
-  PlantRequirementWater,
-} from '../../../entities/plants/models/requirement.entity';
-import { PlantCulture } from '../../../entities/plants/models/culture.entity';
+import { PlantClassification } from '../../../entities/plants/models/plant.classification';
 
 @Injectable()
 export class PlantMapperProfiles extends AutomapperProfile {
@@ -25,87 +14,39 @@ export class PlantMapperProfiles extends AutomapperProfile {
 
   override get profile(): MappingProfile {
     return (mapper: Mapper) => {
-      /**
-       * PlantRequirement
-       */
       createMap(
         mapper,
-        PlantRequirementWater,
-        PlantRequirementWaterResponseBody,
+        PlantClassification,
+        PlantClassificationResponseBody,
         forMember(
-          (d) => d.needs,
-          mapFrom((s) => s.needs),
+          (d) => d.kingdom,
+          mapFrom((s) => s.kingdom),
         ),
         forMember(
-          (d) => d.comment,
-          mapFrom((s) => escapeHtml(s.comment)),
-        ),
-      );
-      createMap(
-        mapper,
-        PlantRequirementSun,
-        PlantRequirementSunResponseBody,
-        forMember(
-          (d) => d.needs,
-          mapFrom((s) => s.needs),
+          (d) => d.clade,
+          mapFrom((s) => s.clade),
         ),
         forMember(
-          (d) => d.comment,
-          mapFrom((s) => escapeHtml(s.comment)),
-        ),
-      );
-      createMap(
-        mapper,
-        PlantRequirement,
-        PlantRequirementResponseBody,
-        forMember(
-          (d) => d.sun,
-          mapFrom((s) => mapper.map(s.sun, PlantRequirementSun, PlantRequirementSunResponseBody)),
+          (d) => d.order,
+          mapFrom((s) => s.order),
         ),
         forMember(
-          (d) => d.water,
-          mapFrom((s) => mapper.map(s.water, PlantRequirementWater, PlantRequirementWaterResponseBody)),
+          (d) => d.family,
+          mapFrom((s) => s.family),
         ),
         forMember(
-          (d) => d.floors,
-          mapFrom((s) => s.floors.map((floor) => floor.toString())),
+          (d) => d.genus,
+          mapFrom((s) => s.genus),
+        ),
+        forMember(
+          (d) => d.species,
+          mapFrom((s) => s.species),
+        ),
+        forMember(
+          (d) => d.binomialName,
+          mapFrom((s) => s.binomialName),
         ),
       );
-      /**
-       * Culture
-       */
-      createMap(
-        mapper,
-        PlantCulture,
-        PlantCultureResponseBody,
-        forMember(
-          (d) => d.cultureTypes,
-          mapFrom((s) => s.cultureTypes),
-        ),
-        forMember(
-          (d) => d.description,
-          mapFrom((s) => escapeHtml(s.description)),
-        ),
-        forMember(
-          (d) => d.spacingBetweenPlants,
-          mapFrom((s) => s.spacingBetweenPlants),
-        ),
-        forMember(
-          (d) => d.sowingPeriod,
-          mapFrom((s) => s.sowingPeriod),
-        ),
-        forMember(
-          (d) => d.growingOnPeriod,
-          mapFrom((s) => s.growingOnPeriod),
-        ),
-        forMember(
-          (d) => d.harvestPeriod,
-          mapFrom((s) => s.harvestPeriod),
-        ),
-      );
-      /**
-       * Plant
-       */
       createMap(
         mapper,
         Plant,
@@ -115,32 +56,16 @@ export class PlantMapperProfiles extends AutomapperProfile {
           mapFrom((s) => s._id.toString()),
         ),
         forMember(
-          (d) => d.plantType,
-          mapFrom((s) => s.plantType.toString()),
-        ),
-        forMember(
-          (d) => d.variety,
-          mapFrom((s) => escapeHtml(s.variety)),
-        ),
-        forMember(
-          (d) => d.origin,
-          mapFrom((s) => s.origin),
+          (d) => d.name,
+          mapFrom((s) => s.name),
         ),
         forMember(
           (d) => d.description,
           mapFrom((s) => escapeHtml(s.description)),
         ),
         forMember(
-          (d) => d.precocity,
-          mapFrom((s) => s.precocity),
-        ),
-        forMember(
-          (d) => d.requirement,
-          mapFrom((s) => mapper.map(s.requirement, PlantRequirement, PlantRequirementResponseBody)),
-        ),
-        forMember(
-          (d) => d.culture,
-          mapFrom((s) => mapper.map(s.culture, PlantCulture, PlantCultureResponseBody)),
+          (d) => d.classification,
+          mapFrom((s) => mapper.map(s.classification, PlantClassification, PlantClassificationResponseBody)),
         ),
         forMember(
           (d) => d.createdBy,

@@ -1,6 +1,6 @@
 import { Prop } from '@nestjs/mongoose';
 
-export class PlantTypeClassification {
+export class PlantClassification {
   @Prop({ required: true })
   kingdom: string;
 
