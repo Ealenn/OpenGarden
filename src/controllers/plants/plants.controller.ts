@@ -8,7 +8,6 @@ import { Plant } from '../../entities/plants/models/plant.entity';
 import { PlantResponseBody, PlantSearchResponseBody } from './models/plant.response.body';
 import { CreatePlantRequestBody } from './models/plant.request.body';
 import { PlantsSearchRequestQuery } from './models/plant.request.query';
-import mongoose from 'mongoose';
 import { ErrorsRequestBody } from '../models/errors.response.body';
 
 @ApiBearerAuth()
@@ -30,11 +29,6 @@ export class PlantsController {
     const createPlant: Plant = {
       ...createPlantRequestBody,
       _id: null,
-      plantType: new mongoose.Types.ObjectId(createPlantRequestBody.plantType),
-      requirement: {
-        ...createPlantRequestBody.requirement,
-        floors: createPlantRequestBody.requirement.floors.map((floor) => new mongoose.Types.ObjectId(floor)),
-      },
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: req.user._id,
@@ -65,7 +59,7 @@ export class PlantsController {
       ...filters,
     });
     const result: PlantSearchResponseBody = {
-      plants: this.mapper.mapArray(plants, Plant, PlantResponseBody),
+      plant: this.mapper.mapArray(plants, Plant, PlantResponseBody),
     };
     return result;
   }

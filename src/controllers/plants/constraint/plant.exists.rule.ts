@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { FloorsService } from '../../../entities/floors/floors.service';
+import { PlantsService } from '../../../entities/plants/plants.service';
 
-@ValidatorConstraint({ name: 'FloorExists', async: true })
+@ValidatorConstraint({ name: 'PlantExists', async: true })
 @Injectable()
-export class FloorExistsRule implements ValidatorConstraintInterface {
+export class PlantExistsRule implements ValidatorConstraintInterface {
   private readonly regex = new RegExp('^[0-9a-fA-F]{24}$');
-  constructor(private floorsService: FloorsService) {}
+  constructor(private plantsService: PlantsService) {}
 
   async validate(value: string) {
     try {
       if (!value.match(this.regex)) {
         return false;
       }
-      return this._validateFloor(value);
+      return this._validatePlant(value);
     } catch (e) {
       return false;
     }
   }
 
-  private async _validateFloor(id: string): Promise<boolean> {
-    const result = await this.floorsService.findOneById(id);
+  private async _validatePlant(id: string): Promise<boolean> {
+    const result = await this.plantsService.findOneById(id);
     if (result) {
       return true;
     }
@@ -28,6 +28,6 @@ export class FloorExistsRule implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `Floor ${args.value} doesn't exist`;
+    return `Plant ${args.value} doesn't exist`;
   }
 }

@@ -9,15 +9,15 @@ import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { PlantsController } from './plants/plants.controller';
-import { PlantMapperProfiles } from './plants/models/mapper.profiles';
+import { VarietiesController } from './varieties/varieties.controller';
+import { VarietyMapperProfiles } from './varieties/models/mapper.profiles';
 import { EntitiesModule } from '../entities/entities.module';
 import { FloorMapperProfiles } from './floors/models/mapper.profiles';
 import { FloorsController } from './floors/floors.controller';
 import { FloorExistsRule } from './floors/constraint/floor.exists.rule';
-import { PlantTypeMapperProfiles } from './plant.types/models/mapper.profiles';
-import { PlantTypesController } from './plant.types/plant.types.controller';
-import { PlantTypeExistsRule } from './plant.types/constraint/plant.types.exists.rule';
+import { PlantMapperProfiles } from './plants/models/mapper.profiles';
+import { PlantsController } from './plants/plants.controller';
+import { PlantExistsRule } from './plants/constraint/plant.exists.rule';
 
 @Module({
   imports: [
@@ -33,17 +33,17 @@ import { PlantTypeExistsRule } from './plant.types/constraint/plant.types.exists
   providers: [
     AccountMapperProfiles,
     ProfileMapperProfiles,
-    PlantTypeMapperProfiles,
-    PlantTypeExistsRule,
     PlantMapperProfiles,
+    PlantExistsRule,
+    VarietyMapperProfiles,
     FloorMapperProfiles,
     FloorExistsRule,
   ],
   controllers: [
     AccountController,
     ProfilesController,
-    PlantTypesController,
     PlantsController,
+    VarietiesController,
     FloorsController,
   ],
 })
