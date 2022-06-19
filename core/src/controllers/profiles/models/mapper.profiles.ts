@@ -24,6 +24,10 @@ export class ProfileMapperProfiles extends AutomapperProfile {
           (d) => d.username,
           mapFrom((s) => s.username),
         ),
+        forMember(
+          (d) => d.roles,
+          mapFrom((s) => s.roles),
+        ),
       );
     };
   }

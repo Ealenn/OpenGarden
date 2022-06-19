@@ -10,6 +10,8 @@ import { CreateVarietyRequestBody } from './models/variety.request.body';
 import { VarietiesSearchRequestQuery } from './models/variety.request.query';
 import mongoose from 'mongoose';
 import { ErrorsRequestBody } from '../models/errors.response.body';
+import { Roles } from '../../auth/roles/roles.decorator';
+import { Role } from '../../auth/roles/role.enum';
 
 @ApiBearerAuth()
 @ApiTags('Varieties')
@@ -20,6 +22,8 @@ export class VarietiesController {
   constructor(private plantsService: VarietiesService, @InjectMapper() private mapper: Mapper) {}
 
   @Post()
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 201, type: VarietyResponseBody })
   @ApiResponse({
     status: 400,

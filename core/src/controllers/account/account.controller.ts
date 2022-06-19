@@ -13,6 +13,7 @@ import { UsersService } from '../../users/users.service';
 import { RegisterRequestBody } from './models/register.request.body';
 import { HashService } from '../../auth/hash.service';
 import { ErrorsRequestBody } from '../models/errors.response.body';
+import { Role } from '../../auth/roles/role.enum';
 
 @ApiTags('Account')
 @Controller('/account')
@@ -53,6 +54,7 @@ export class AccountController {
     const createUser: User = {
       ...registerRequestBody,
       _id: null,
+      roles: [Role.USER],
       password: this.hashService.hash(registerRequestBody.password),
     };
     const user = await this.usersService.create(createUser);

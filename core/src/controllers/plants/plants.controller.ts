@@ -20,6 +20,8 @@ import { CreatePlantRequestBody } from './models/plant.request.body';
 import { PlantsSearchRequestQuery } from './models/plant.request.query';
 import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Response as Res } from 'express';
+import { Roles } from '../../auth/roles/roles.decorator';
+import { Role } from '../../auth/roles/role.enum';
 
 @ApiBearerAuth()
 @ApiTags('Plants')
@@ -30,6 +32,8 @@ export class PlantsController {
   constructor(private plantsService: PlantsService, @InjectMapper() private mapper: Mapper) {}
 
   @Post()
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 201, type: PlantResponseBody })
   @ApiResponse({
     status: 400,

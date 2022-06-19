@@ -15,12 +15,16 @@ const App = () => (
     layout={OpenGardenAdminLayout}
     authProvider={AuthProvider}
     dataProvider={Provider(BASE_URL, HttpClient)}>
-    <Resource name="plants"
-      create={PlantCreate}
-      edit={PlantEdit}
-      list={PlantsList}
-      show={PlantShow}
-      icon={IoFlower} />
+    {permissions => (
+      <>
+        <Resource name="plants"
+          create={permissions.includes('ADMIN') ? PlantCreate : null}
+          edit={permissions.includes('ADMIN') ? PlantEdit : null}
+          list={PlantsList}
+          show={PlantShow}
+          icon={IoFlower} />
+      </>
+    )}
   </Admin>
 );
 

@@ -5,7 +5,6 @@ import { fetchUtils, DataProvider } from 'ra-core';
 export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
-    // const { field, order } = params.sort;
     const query = {
       ...fetchUtils.flattenObject(params.filter),
       offset: (page - 1) * perPage,

@@ -4,7 +4,7 @@ export const HttpClient = (url, options = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
   }
-  const access_token = JSON.parse(localStorage.getItem("auth"));
+  const access_token = JSON.parse(localStorage.getItem("access_token"));
   options.headers.set("Authorization", `Bearer ${access_token}`);
   return fetchUtils.fetchJson(url, options);
 };
