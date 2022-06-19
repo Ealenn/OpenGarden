@@ -1,0 +1,31 @@
+name: "Core - NodeJS Linter"
+
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./core
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: 'core'
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install, build, and test
+      run: |
+        cd core
+        npm ci
+        npm run lint
+      env:
+        CI: true

@@ -1,0 +1,46 @@
+{
+  "name": "opengarden-admin",
+  "version": "0.0.1",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.x.x",
+    "@testing-library/react": "^13.x.x",
+    "@testing-library/user-event": "^13.x.x",
+    "@tiptap/starter-kit": "2.0.0-beta.185",
+    "axios": "^0.27.x",
+    "jwt-decode": "^3.1.2",
+    "prop-types": "^15.x.x",
+    "ra-input-rich-text": "^4.1.5",
+    "react": "^18.x.x",
+    "react-admin": "^4.1.5",
+    "react-dom": "^18.x.x",
+    "react-icons": "^4.4.0",
+    "react-scripts": "5.x.x",
+    "serve": "^13.0.2",
+    "web-vitals": "^2.x.x"
+  },
+  "scripts": {
+    "start": "npx react-scripts start",
+    "start:prod": "npm run build && npx serve build",
+    "build": "npx react-scripts build",
+    "test": "npx react-scripts test",
+    "eject": "npx react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
