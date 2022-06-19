@@ -12,6 +12,8 @@ import { PlantCreate, PlantEdit, PlantShow, PlantsList } from "./views/plants";
 
 const App = () => (
   <Admin
+    title="OpenGarden"
+    requireAuth={true}
     layout={OpenGardenAdminLayout}
     authProvider={AuthProvider}
     dataProvider={Provider(BASE_URL, HttpClient)}>
