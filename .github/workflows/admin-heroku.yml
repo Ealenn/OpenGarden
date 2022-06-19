@@ -32,7 +32,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_ADMIN}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          buildpack: "https://github.com/heroku/heroku-buildpack-nginx"
+          buildpack: "heroku-community/nginx"
           procfile: "web: bin/start-nginx-solo"
         env:
           HD_APP_VERSION: ${{ steps.extract_branch.outputs.branch }}
