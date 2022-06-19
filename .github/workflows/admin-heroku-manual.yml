@@ -21,7 +21,6 @@ jobs:
           node-version: 16.x
       - name: Install, build, and test
         run: |
-          cd admin
           npm ci
           npm run build
         env:
