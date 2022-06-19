@@ -7,31 +7,41 @@
 
 ## Description
 
-This API provides lots of information about plantations, their needs, and sowing advice.
+This API/Projects provides lots of information about plantations, their needs, and sowing advice.
 
 [![Roadmap](https://img.shields.io/badge/view-roadmap-blue?logo=trello&style=for-the-badge)](https://github.com/users/Ealenn/projects/3)
 [![Swagger](https://img.shields.io/badge/view-swagger_ui-green?logo=swagger&style=for-the-badge)](https://opengarden.herokuapp.com/)
+[![Admin](https://img.shields.io/badge/view-admin-blue?logo=pwa&style=for-the-badge)](https://opengarden-admin.herokuapp.com/)
+[![Home Assistant](https://img.shields.io/badge/hass.io-not_available-lightgrey?logo=homeassistant&style=for-the-badge)]()
+[![App](https://img.shields.io/badge/Application-not_available-lightgrey?logo=pwa&style=for-the-badge)]()
 
 - [Open Garden](#open-garden)
   - [Description](#description)
+  - [Projects](#projects)
   - [Integration](#integration)
     - [Rate Limiting](#rate-limiting)
+    - [Content-Range](#content-range)
     - [JWT Ticket](#jwt-ticket)
     - [Bad Request Handling](#bad-request-handling)
-  - [Development](#development)
-    - [Installation](#installation)
-    - [Running the app](#running-the-app)
-    - [Test](#test)
   - [Roadmap](#roadmap)
     - [Release notes](#release-notes)
   - [Versioning](#versioning)
   - [Contributing](#contributing)
 
+## Projects
+
+| Project | Description | |
+| ----------- | ----------- | ----------- |
+| Core | Contains server, including REST API, Socket Server... | [![core](https://img.shields.io/badge/view-project-blue?logo=github&style=for-the-badge)](https://github.com/Ealenn/OpenGarden/tree/master/core) |
+| Admin | Backend automatically generated using swagger definition | [![core](https://img.shields.io/badge/view-project-blue?logo=github&style=for-the-badge)](https://github.com/Ealenn/OpenGarden/tree/master/admin) | |
+| Hass | Home Assistant add-on | In progress... | |
+| App | Web Application | In progress... | |
+
 ## Integration
 
 ### Rate Limiting
 
-This API is protected by throttling.
+This project is protected by throttling.
 
 You can compute your remaining requests via the responses headers.
 
@@ -40,6 +50,12 @@ You can compute your remaining requests via the responses headers.
 |`x-ratelimit-limit`       | the maximum number of requests           |`20`|
 |`x-ratelimit-remaining`   | remaining requests                       |`18`|
 |`x-ratelimit-reset`       | time to reset the counter                |`30`|
+
+### Content-Range
+
+| Header                   | Description                              | Example            |
+|--------------------------|------------------------------------------|--------------------|
+|`Content-Range` | The Content-Range response HTTP header indicates where in a full body message a partial message belongs. like `elements {range-start}-{range-end}/{size}` |`elements 0-10/1`|
 
 ### JWT Ticket
 
@@ -72,39 +88,6 @@ To obtain this `{TOKEN}` you must call the endpoint `/account/login` (cf [Swagge
   ],
   "error": "Bad Request"
 }
-```
-
-## Development
-### Installation
-
-```bash
-$ npm ci
-```
-
-### Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-### Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Roadmap
