@@ -27,6 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install, build, and test
       run: |
+        cd core
         npm ci
         npm run build
         npm run test:cov
