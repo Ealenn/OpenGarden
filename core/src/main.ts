@@ -70,7 +70,10 @@ function getSwaggerDescription(): string {
     This API provides lots of information about plantations, their needs, and sowing advice.
   </p>
 
-  <p><a href="https://github.com/users/Ealenn/projects/3"><img src="https://img.shields.io/badge/view-roadmap-blue?logo=trello&amp;style=for-the-badge" alt="Roadmap"></a></p>
+  <p>
+    <a href="https://github.com/users/Ealenn/projects/3"><img src="https://img.shields.io/badge/view-roadmap-blue?logo=trello&amp;style=for-the-badge" alt="Roadmap"></a>
+    <a href="https://opengarden-admin.herokuapp.com/"><img src="https://img.shields.io/badge/view-Admin-blue?logo=pwa&amp;style=for-the-badge" alt="Admin"></a>
+  </p>
 
   <p>
     <b>Warning</b>: This API evolves during its development phase. The database is regularly purged.
