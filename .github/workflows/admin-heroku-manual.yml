@@ -26,5 +26,6 @@ jobs:
           buildpack: "https://github.com/heroku/heroku-buildpack-nodejs"
           procfile: "web: npm run start:prod"
         env:
+          APP_VERSION: ${{ steps.extract_branch.outputs.branch }}
           HD_APP_VERSION: ${{ steps.extract_branch.outputs.branch }}
           HD_PORT: 80
