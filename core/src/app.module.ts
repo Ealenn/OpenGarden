@@ -9,6 +9,7 @@ import { JwtGuard } from './auth/jwt.guard';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { ControllersModule } from './controllers/controllers.module';
 import { EntitiesModule } from './entities/entities.module';
+import { RolesGuard } from './auth/roles/roles.guard';
 
 @Module({
   imports: [
@@ -43,6 +44,10 @@ import { EntitiesModule } from './entities/entities.module';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

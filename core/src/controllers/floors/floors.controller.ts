@@ -20,6 +20,8 @@ import { CreateFloorRequestBody } from './models/floor.request.body';
 import { FloorsSearchRequestQuery } from './models/floor.request.query';
 import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Response as Res } from 'express';
+import { Roles } from '../../auth/roles/roles.decorator';
+import { Role } from '../../auth/roles/role.enum';
 
 @ApiBearerAuth()
 @ApiTags('Floors')
@@ -30,6 +32,8 @@ export class FloorsController {
   constructor(private floorsService: FloorsService, @InjectMapper() private mapper: Mapper) {}
 
   @Post()
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 201, type: FloorResponseBody })
   @ApiResponse({
     status: 400,

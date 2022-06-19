@@ -7,8 +7,8 @@ import {
   Show,
   RichTextField,
   ReferenceOneField,
-  EditButton,
   ShowButton,
+  EditButton,
   Create,
   TextInput,
   SimpleFormIterator,
@@ -24,9 +24,10 @@ import {
 } from "react-admin";
 import { RichTextInput } from 'ra-input-rich-text';
 import { StringToLabelObject } from '../helpers/StringToLabelObject';
+import { GetPermissions } from "../helpers/GetPermissions";
 
-export const PlantCreate = () => (
-  <Create>
+export const PlantCreate = (props) => (
+  <Create {...props}>
     <TabbedForm>
       <FormTab label="Plant">
         <TextInput source="name" />
@@ -49,8 +50,8 @@ export const PlantCreate = () => (
   </Create>
 );
 
-export const PlantEdit = () => (
-  <Edit>
+export const PlantEdit = (props) => (
+  <Edit {...props}>
     <TabbedForm>
       <FormTab label="Plant">
         <TextInput source="name" />
@@ -73,24 +74,27 @@ export const PlantEdit = () => (
   </Edit>
 );
 
-export const PlantsList = (props) => (
-  <List {...props}>
-    <Datagrid>
-      <TextField source="name" />
-      <TextField source="classification.binomialName" />
-      <ReferenceOneField reference="profiles" source="createdBy">
-        <TextField source="username" />
-      </ReferenceOneField>
-      <DateField source="createdAt" />
-      <DateField source="updatedAt" />
-      <EditButton />
-      <ShowButton />
-    </Datagrid>
-  </List>
-);
+export const PlantsList = (props) => {
+  const permissions = GetPermissions();
+  return (
+    <List {...props} exporter={false}>
+      <Datagrid isRowSelectable={() => permissions.includes('ADMIN')}>
+        <TextField source="name" />
+        <TextField source="classification.binomialName" />
+        <ReferenceOneField reference="profiles" source="createdBy">
+          <TextField source="username" />
+        </ReferenceOneField>
+        <DateField source="createdAt" />
+        <DateField source="updatedAt" />
+        {permissions.includes('ADMIN') && <EditButton />}
+        <ShowButton />
+      </Datagrid>
+    </List>
+  );
+};
 
 export const PlantShow = (props) => (
-  <Show>
+  <Show {...props}>
     <TabbedShowLayout>
       <Tab label="Summary">
         <TextField source="name" />

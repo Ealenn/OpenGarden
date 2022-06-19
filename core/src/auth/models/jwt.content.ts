@@ -1,3 +1,5 @@
+import { Role } from '../roles/role.enum';
+
 export interface JwtContent {
   /**
    * User ID
@@ -5,4 +7,5 @@ export interface JwtContent {
   sub: string;
   username: string;
   email: string;
+  roles: Role[];
 }
