@@ -28,6 +28,14 @@ export class FloorsService extends BaseEntityService {
     }
   }
 
+  async deleteFloor(floorId: string): Promise<Floor | undefined> {
+    try {
+      return await this.FloorModel.findByIdAndDelete(floorId);
+    } catch {
+      return null;
+    }
+  }
+
   async findOneById(id: string): Promise<Floor | undefined> {
     return await this.FloorModel.findById(id);
   }
