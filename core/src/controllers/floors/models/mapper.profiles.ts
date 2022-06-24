@@ -29,6 +29,10 @@ export class FloorMapperProfiles extends AutomapperProfile {
           mapFrom((s) => s.description),
         ),
         forMember(
+          (d) => d.status,
+          mapFrom((s) => s.status),
+        ),
+        forMember(
           (d) => d.createdBy,
           mapFrom((s) => s.createdBy.toString()),
         ),

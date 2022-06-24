@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PublishedState } from '../../../entities/base.published.entity';
 
 export class FloorResponseBody {
   @ApiProperty()
@@ -9,6 +10,9 @@ export class FloorResponseBody {
 
   @ApiProperty()
   description: string;
+
+  @ApiProperty({ enum: PublishedState })
+  status: PublishedState;
 
   @ApiProperty()
   createdBy: string;

@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { BaseEntity } from '../../base.entity';
+import { BasePublishedEntity } from '../../base.published.entity';
 
 export type FloorDocument = Floor & Document;
 
 @Schema()
-export class Floor extends BaseEntity {
+export class Floor extends BasePublishedEntity {
   @Prop({ required: true, unique: true })
   name: string;
 

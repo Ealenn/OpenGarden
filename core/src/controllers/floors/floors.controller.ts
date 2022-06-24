@@ -8,6 +8,7 @@ import {
   Post,
   Query,
   Response,
+  Delete,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
@@ -22,6 +23,7 @@ import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Response as Res } from 'express';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { Role } from '../../auth/roles/role.enum';
+import { PublishedState } from '../../entities/base.published.entity';
 
 @ApiBearerAuth()
 @ApiTags('Floors')
@@ -35,15 +37,12 @@ export class FloorsController {
   @Roles(Role.ADMIN)
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 201, type: FloorResponseBody })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-    type: ErrorsRequestBody,
-  })
+  @ApiResponse({ status: 400, description: 'Bad Request', type: ErrorsRequestBody })
   async createFloor(@Request() req, @Body() createFloorRequestBody: CreateFloorRequestBody) {
     const createFloor: Floor = {
       ...createFloorRequestBody,
       _id: null,
+      status: PublishedState.ONLINE,
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: req.user._id,
@@ -52,19 +51,31 @@ export class FloorsController {
     return this.mapper.map(floor, Floor, FloorResponseBody);
   }
 
+  @Delete(':floorId')
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 200, type: FloorResponseBody })
+  async deletePlant(@Response() res: Res, @Request() req, @Param('floorId') plantId: string) {
+    const floor = await this.floorsService.deleteFloor(plantId);
+    if (!floor) {
+      throw new NotFoundException();
+    }
+
+    const body = this.mapper.map(floor, Floor, FloorResponseBody);
+    return res.set({ 'Content-Range': `elements 0-1/1` }).json(body);
+  }
+
   @Get(':floorId')
   @ApiResponse({ status: 200, type: FloorResponseBody })
-  @ApiResponse({
-    status: 404,
-    description: 'Not Found',
-    type: ErrorsRequestBody,
-  })
-  async getFloorById(@Param('floorId') floorId: string) {
+  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  async getFloorById(@Response() res: Res, @Param('floorId') floorId: string) {
     const floor = await this.floorsService.findOneById(floorId);
     if (!floor) {
       throw new NotFoundException();
     }
-    return this.mapper.map(floor, Floor, FloorResponseBody);
+    const body = this.mapper.map(floor, Floor, FloorResponseBody);
+    return res.set({ 'Content-Range': `elements 0-1/1` }).json(body);
   }
 
   @Get()
@@ -81,10 +92,6 @@ export class FloorsController {
     const body: FloorSearchResponseBody = {
       floors: this.mapper.mapArray(elements, Floor, FloorResponseBody),
     };
-    return res
-      .set({
-        'Content-Range': `elements ${offset}-${offset + limit}/${count}`,
-      })
-      .json(body);
+    return res.set({ 'Content-Range': `elements ${offset}-${offset + limit}/${count}` }).json(body);
   }
 }

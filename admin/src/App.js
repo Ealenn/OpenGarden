@@ -7,9 +7,11 @@ import { BASE_URL } from "./configs/BaseUrl";
 
 import { OpenGardenAdminLayout } from './themes/Layout';
 
-import { IoFlower, IoFlowerOutline } from "react-icons/io5";
+import { TbSeeding, TbTree, TbPlant2 } from 'react-icons/tb';
+
 import { PlantCreate, PlantEdit, PlantShow, PlantsList } from "./views/plants";
 import { VarietyCreate, VarietyEdit, VarietyShow, VarietiesList } from "./views/varieties";
+import { FloorCreate, FloorEdit, FloorShow, FloorsList } from "./views/floors";
 
 const App = () => (
   <Admin
@@ -25,13 +27,19 @@ const App = () => (
           edit={permissions.includes('ADMIN') ? PlantEdit : null}
           list={PlantsList}
           show={PlantShow}
-          icon={IoFlower} />
+          icon={TbTree} />
         <Resource name="varieties"
           create={permissions.includes('ADMIN') ? VarietyCreate : null}
           edit={permissions.includes('ADMIN') ? VarietyEdit : null}
           list={VarietiesList}
           show={VarietyShow}
-          icon={IoFlowerOutline} />
+          icon={TbSeeding} />
+        <Resource name="floors"
+          create={permissions.includes('ADMIN') ? FloorCreate : null}
+          edit={permissions.includes('ADMIN') ? FloorEdit : null}
+          list={FloorsList}
+          show={FloorShow}
+          icon={TbPlant2} />
       </>
     )}
   </Admin>
