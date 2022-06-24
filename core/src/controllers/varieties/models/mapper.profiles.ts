@@ -119,7 +119,7 @@ export class VarietyMapperProfiles extends AutomapperProfile {
           mapFrom((s) => s.plant.toString()),
         ),
         forMember(
-          (d) => d.variety,
+          (d) => d.name,
           mapFrom((s) => escapeHtml(s.name)),
         ),
         forMember(

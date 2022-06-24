@@ -7,8 +7,9 @@ import { BASE_URL } from "./configs/BaseUrl";
 
 import { OpenGardenAdminLayout } from './themes/Layout';
 
-import { IoFlower } from "react-icons/io5";
+import { IoFlower, IoFlowerOutline } from "react-icons/io5";
 import { PlantCreate, PlantEdit, PlantShow, PlantsList } from "./views/plants";
+import { VarietyCreate, VarietyEdit, VarietyShow, VarietiesList } from "./views/varieties";
 
 const App = () => (
   <Admin
@@ -25,6 +26,12 @@ const App = () => (
           list={PlantsList}
           show={PlantShow}
           icon={IoFlower} />
+        <Resource name="varieties"
+          create={permissions.includes('ADMIN') ? VarietyCreate : null}
+          edit={permissions.includes('ADMIN') ? VarietyEdit : null}
+          list={VarietiesList}
+          show={VarietyShow}
+          icon={IoFlowerOutline} />
       </>
     )}
   </Admin>

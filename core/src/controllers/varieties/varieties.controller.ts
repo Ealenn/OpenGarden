@@ -1,4 +1,15 @@
-import { Body, Request, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Request,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Query,
+  Response,
+  Delete,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
@@ -13,6 +24,7 @@ import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { Role } from '../../auth/roles/role.enum';
 import { PublishedState } from '../../entities/base.published.entity';
+import { Response as Res } from 'express';
 
 @ApiBearerAuth()
 @ApiTags('Varieties')
@@ -20,7 +32,7 @@ import { PublishedState } from '../../entities/base.published.entity';
 @ApiResponse({ status: 429, description: 'Too Many Requests' })
 @Controller('varieties')
 export class VarietiesController {
-  constructor(private plantsService: VarietiesService, @InjectMapper() private mapper: Mapper) {}
+  constructor(private varietiesService: VarietiesService, @InjectMapper() private mapper: Mapper) {}
 
   @Post()
   @Roles(Role.ADMIN)
@@ -47,34 +59,50 @@ export class VarietiesController {
       updatedAt: new Date(),
       createdBy: req.user._id,
     };
-    const plant = await this.plantsService.create(createVariety);
+    const plant = await this.varietiesService.create(createVariety);
     return this.mapper.map(plant, Variety, VarietyResponseBody);
+  }
+
+  @Delete(':varietyId')
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 200, type: VarietyResponseBody })
+  async deletePlant(@Request() req, @Param('varietyId') varietyId: string) {
+    const variety = await this.varietiesService.delete(varietyId);
+    if (!variety) {
+      throw new NotFoundException();
+    }
+
+    return this.mapper.map(variety, Variety, VarietyResponseBody);
   }
 
   @Get(':varietyId')
   @ApiResponse({ status: 200, type: VarietyResponseBody })
-  async getVarietyById(@Param('varietyId') varietyId: string) {
-    const plant = await this.plantsService.findOneById(varietyId);
+  async getVarietyById(@Response() res: Res, @Param('varietyId') varietyId: string) {
+    const plant = await this.varietiesService.findOneById(varietyId);
     if (!plant) {
       throw new NotFoundException();
     }
-    return this.mapper.map(plant, Variety, VarietyResponseBody);
+
+    const body = this.mapper.map(plant, Variety, VarietyResponseBody);
+    return res.set({ 'Content-Range': `elements 0-1/1` }).json(body);
   }
 
   @Get()
   @ApiResponse({ status: 200, type: VarietySearchResponseBody })
-  async getVarieties(@Query() plantsSearchRequestQuery: VarietiesSearchRequestQuery) {
+  async getVarieties(@Response() res: Res, @Query() plantsSearchRequestQuery: VarietiesSearchRequestQuery) {
     const { limit, offset, ...filters } = plantsSearchRequestQuery;
-    const plants = await this.plantsService.search({
+    const [elements, count] = await this.varietiesService.search({
       pagination: {
         limit,
         offset,
       },
       ...filters,
     });
-    const result: VarietySearchResponseBody = {
-      varieties: this.mapper.mapArray(plants, Variety, VarietyResponseBody),
+    const body: VarietySearchResponseBody = {
+      varieties: this.mapper.mapArray(elements, Variety, VarietyResponseBody),
     };
-    return result;
+    return res.set({ 'Content-Range': `elements ${offset}-${offset + limit}/${count}` }).json(body);
   }
 }

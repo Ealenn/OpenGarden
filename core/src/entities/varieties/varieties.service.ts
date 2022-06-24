@@ -25,14 +25,14 @@ export class VarietySearchParams extends BaseSearchParams {
 
 @Injectable()
 export class VarietiesService extends BaseEntityService {
-  constructor(@InjectModel(Variety.name) private plantModel: Model<VarietyDocument>) {
+  constructor(@InjectModel(Variety.name) private varietyModel: Model<VarietyDocument>) {
     super();
   }
 
   async create(plant: Variety): Promise<Variety> {
     try {
       plant._id = new mongoose.Types.ObjectId();
-      return await this.plantModel.create(plant);
+      return await this.varietyModel.create(plant);
     } catch (exception) {
       if (exception.code === 11000) {
         throw new ConflictException();
@@ -41,11 +41,19 @@ export class VarietiesService extends BaseEntityService {
     }
   }
 
-  async findOneById(id: string): Promise<Variety | undefined> {
-    return await this.plantModel.findById(id);
+  async delete(varietyId: string): Promise<Variety | undefined> {
+    try {
+      return await this.varietyModel.findByIdAndDelete(varietyId);
+    } catch {
+      return null;
+    }
   }
 
-  async search(params: VarietySearchParams): Promise<Variety[]> {
+  async findOneById(id: string): Promise<Variety | undefined> {
+    return await this.varietyModel.findById(id);
+  }
+
+  async search(params: VarietySearchParams): Promise<[Variety[], number]> {
     const {
       pagination,
       sunNeed,
@@ -90,6 +98,9 @@ export class VarietiesService extends BaseEntityService {
     findParam = this._generateFilter(findParam, 'culture.sowingPeriod', sowingPeriod);
     findParam = this._generateFilter(findParam, 'culture.growingOnPeriod', growingOnPeriod);
     findParam = this._generateFilter(findParam, 'culture.harvestPeriod', harvestPeriod);
-    return await this.plantModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
+
+    const elements = await this.varietyModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
+    const count = await this.varietyModel.count(findParam);
+    return [elements, count];
   }
 }

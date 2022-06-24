@@ -68,12 +68,14 @@ export class PlantsController {
   @Get(':plantId')
   @ApiResponse({ status: 200, type: PlantResponseBody })
   @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
-  async getPlantById(@Param('plantId') plantId: string) {
+  async getPlantById(@Response() res: Res, @Param('plantId') plantId: string) {
     const plant = await this.plantsService.findOneById(plantId);
     if (!plant) {
       throw new NotFoundException();
     }
-    return this.mapper.map(plant, Plant, PlantResponseBody);
+
+    const body = this.mapper.map(plant, Plant, PlantResponseBody);
+    return res.set({ 'Content-Range': `elements 0-1/1` }).json(body);
   }
 
   @Get()
@@ -91,10 +93,6 @@ export class PlantsController {
     const body: PlantSearchResponseBody = {
       plants: this.mapper.mapArray(elements, Plant, PlantResponseBody),
     };
-    return res
-      .set({
-        'Content-Range': `elements ${offset}-${offset + limit}/${count}`,
-      })
-      .json(body);
+    return res.set({ 'Content-Range': `elements ${offset}-${offset + limit}/${count}` }).json(body);
   }
 }
