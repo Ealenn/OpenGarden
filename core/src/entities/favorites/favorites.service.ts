@@ -41,16 +41,21 @@ export class FavoritesService extends BaseEntityService {
     filters = this._generateFilter(filters, 'createdBy', user._id);
     filters = this._generateFilter(filters, 'variety', new Types.ObjectId(varietyId));
     filters = this._generateFilter(filters, 'compositeKey', `${user._id.toString()}${varietyId}`);
-    return await this.favoriteVarietyModel.remove(filters).limit(1);
+    return await this.favoriteVarietyModel.findOneAndRemove(filters);
   }
 
-  async getVarieties(params: FavoritesSearchParams, user: User): Promise<FavoriteVariety[]> {
+  async getVarieties(params: FavoritesSearchParams, user: User): Promise<[FavoriteVariety[], number]> {
     const { pagination } = params;
     const findParam = this._generateFilters({
       createdBy: user._id,
     });
 
-    return await this.favoriteVarietyModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
+    const elements = await this.favoriteVarietyModel
+      .find(findParam)
+      .skip(pagination.offset)
+      .limit(pagination.limit);
+    const count = await this.favoriteVarietyModel.count(findParam);
+    return [elements, count];
   }
 
   async getVariety(varietyId: string, user: User): Promise<FavoriteVariety> {

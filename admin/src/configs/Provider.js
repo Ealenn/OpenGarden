@@ -4,6 +4,7 @@ import { fetchUtils, DataProvider } from 'ra-core';
 
 export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
   getList: (resource, params) => {
+    const resourceName = resource.split('/').slice(-1);
     const { page, perPage } = params.pagination;
     const query = {
       ...fetchUtils.flattenObject(params.filter),
@@ -19,7 +20,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
         );
       }
       return {
-        data: json[resource],
+        data: json[resourceName],
         total: parseInt(
           headers.get('content-range').split('/').pop(),
           10
@@ -36,12 +37,13 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
   },
 
   getMany: (resource, params) => {
+    const resourceName = resource.split('/').slice(-1);
     console.log('getMany', resource, params);
     const query = {
       id: params.ids,
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
-    return httpClient(url).then(({ json }) => ({ data: json[resource] }))
+    return httpClient(url).then(({ json }) => ({ data: json[resourceName] }))
   },
 
   getManyReference: (resource, params) => {

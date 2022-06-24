@@ -8,6 +8,7 @@ import {
   Delete,
   Param,
   NotFoundException,
+  Response,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
@@ -22,6 +23,7 @@ import {
 } from './models/favorite.response.body';
 import { FavoriteVariety } from '../../entities/favorites/models/favorite.variety.entity';
 import { FavoriteVarietiesSearchRequestQuery } from './models/favorite.variety.request.query';
+import { Response as Res } from 'express';
 
 @ApiBearerAuth()
 @ApiTags('Favorites')
@@ -33,22 +35,20 @@ export class FavoritesVarietiesController {
 
   @Delete(':varietyId')
   @ApiResponse({ status: 200 })
-  @ApiResponse({
-    status: 404,
-    description: 'Not Found',
-    type: ErrorsRequestBody,
-  })
-  async deleteFavorite(@Request() req, @Param('varietyId') varietyId: string) {
-    await this.favoritesService.deleteVariety(varietyId, req.user);
+  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  async deleteFavorite(@Response() res: Res, @Request() req, @Param('varietyId') varietyId: string) {
+    const favorite = await this.favoritesService.deleteVariety(varietyId, req.user);
+    if (!favorite) {
+      throw new NotFoundException();
+    }
+
+    const body = this.mapper.map(favorite, FavoriteVariety, FavoriteVarietyResponseBody);
+    return res.set({ 'Content-Range': `elements 0-1/1` }).json(body);
   }
 
   @Post()
   @ApiResponse({ status: 201, type: FavoriteVarietyResponseBody })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-    type: ErrorsRequestBody,
-  })
+  @ApiResponse({ status: 400, description: 'Bad Request', type: ErrorsRequestBody })
   async createFavorite(@Request() req, @Body() createFavoriteRequestBody: CreateFavoriteVarietyRequestBody) {
     const favorite = await this.favoritesService.addVariety(createFavoriteRequestBody.variety, req.user);
     return this.mapper.map(favorite, FavoriteVariety, FavoriteVarietyResponseBody);
@@ -57,11 +57,12 @@ export class FavoritesVarietiesController {
   @Get()
   @ApiResponse({ status: 200, type: FavoriteVarietySearchResponseBody })
   async getFavoritesVarieties(
+    @Response() res: Res,
     @Query() favoritesSearchRequestQuery: FavoriteVarietiesSearchRequestQuery,
     @Request() req,
   ) {
     const { limit, offset, ...filters } = favoritesSearchRequestQuery;
-    const favorites = await this.favoritesService.getVarieties(
+    const [elements, count] = await this.favoritesService.getVarieties(
       {
         pagination: {
           limit,
@@ -71,24 +72,22 @@ export class FavoritesVarietiesController {
       },
       req.user,
     );
-    const result: FavoriteVarietySearchResponseBody = {
-      varieties: this.mapper.mapArray(favorites, FavoriteVariety, FavoriteVarietyResponseBody),
+    const body: FavoriteVarietySearchResponseBody = {
+      varieties: this.mapper.mapArray(elements, FavoriteVariety, FavoriteVarietyResponseBody),
     };
-    return result;
+    return res.set({ 'Content-Range': `elements ${offset}-${offset + limit}/${count}` }).json(body);
   }
 
   @Get(':varietyId')
   @ApiResponse({ status: 200, type: FavoriteVarietyResponseBody })
-  @ApiResponse({
-    status: 404,
-    description: 'Not Found',
-    type: ErrorsRequestBody,
-  })
-  async getFavoriteVariety(@Request() req, @Param('varietyId') varietyId: string) {
+  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  async getFavoriteVariety(@Response() res: Res, @Request() req, @Param('varietyId') varietyId: string) {
     const favorite = await this.favoritesService.getVariety(varietyId, req.user);
     if (!favorite) {
       throw new NotFoundException();
     }
-    return this.mapper.map(favorite, FavoriteVariety, FavoriteVarietyResponseBody);
+
+    const body = this.mapper.map(favorite, FavoriteVariety, FavoriteVarietyResponseBody);
+    return res.set({ 'Content-Range': `elements 0-1/1` }).json(body);
   }
 }

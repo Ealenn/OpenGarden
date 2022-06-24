@@ -5,70 +5,54 @@ import {
   TextField,
   DateField,
   Show,
-  RichTextField,
   ReferenceOneField,
   ShowButton,
-  EditButton,
   Create,
-  TextInput,
   SingleFieldList,
   ChipField,
   ArrayField,
-  Edit,
   TabbedShowLayout,
   Tab,
-  SimpleForm
+  ReferenceInput,
+  SelectInput,
+  SimpleForm,
+  ReferenceField
 } from "react-admin";
-import { RichTextInput } from 'ra-input-rich-text';
 import { StringToLabelObject } from '../helpers/StringToLabelObject';
-import { GetPermissions } from "../helpers/GetPermissions";
 
-export const FloorCreate = (props) => (
+export const FavoritesVarietyCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
-      <TextInput source="name" />
-      <RichTextInput source="description" multiline fullWidth />
+      <ReferenceInput source="variety" reference="varieties">
+        <SelectInput optionText="name" />
+      </ReferenceInput>
     </SimpleForm>
   </Create>
 );
 
-export const FloorEdit = (props) => (
-  <Edit {...props}>
-    <SimpleForm>
-      <TextInput source="name" />
-      <RichTextInput source="description" multiline fullWidth />
-    </SimpleForm>
-  </Edit>
-);
-
-export const FloorsList = (props) => {
-  const permissions = GetPermissions();
+export const FavoritesVarietiesList = (props) => {
   return (
     <List {...props} exporter={false}>
-      <Datagrid isRowSelectable={() => permissions.includes('ADMIN')}>
-        <TextField source="name" />
-        <ReferenceOneField reference="profiles" source="createdBy">
-          <TextField source="username" />
+      <Datagrid>
+        <ReferenceOneField reference="varieties" source="id" label="name">
+          <TextField source="name" />
         </ReferenceOneField>
         <DateField source="createdAt" />
-        <DateField source="updatedAt" />
-        <ChipField source="status" />
-        {permissions.includes('ADMIN') && <EditButton />}
         <ShowButton />
       </Datagrid>
     </List>
   );
 };
 
-export const FloorShow = (props) => (
+export const FavoritesVarietyShow = (props) => (
   <Show {...props}>
     <TabbedShowLayout>
       <Tab label="Summary">
-        <TextField source="name" />
-        <RichTextField source="description" />
+        <ReferenceField reference="varieties" source="id">
+          <TextField source="name" />
+        </ReferenceField>
       </Tab>
       <Tab label="Metadata">
-        <ChipField source="status" />
         <ReferenceOneField reference="profiles" source="createdBy">
           <TextField source="username" />
           <ArrayField source="roles">
