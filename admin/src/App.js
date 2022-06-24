@@ -7,11 +7,12 @@ import { BASE_URL } from "./configs/BaseUrl";
 
 import { OpenGardenAdminLayout } from './themes/Layout';
 
-import { TbSeeding, TbTree, TbPlant2 } from 'react-icons/tb';
+import { TbSeeding, TbTree, TbPlant2, TbStar } from 'react-icons/tb';
 
 import { PlantCreate, PlantEdit, PlantShow, PlantsList } from "./views/plants";
 import { VarietyCreate, VarietyEdit, VarietyShow, VarietiesList } from "./views/varieties";
 import { FloorCreate, FloorEdit, FloorShow, FloorsList } from "./views/floors";
+import { FavoritesVarietiesList, FavoritesVarietyCreate, FavoritesVarietyShow } from "./views/favorites.varieties";
 
 const App = () => (
   <Admin
@@ -34,6 +35,11 @@ const App = () => (
           list={VarietiesList}
           show={VarietyShow}
           icon={TbSeeding} />
+        <Resource name="favorites/varieties"
+          create={FavoritesVarietyCreate}
+          list={FavoritesVarietiesList}
+          show={FavoritesVarietyShow}
+          icon={TbStar} />
         <Resource name="floors"
           create={permissions.includes('ADMIN') ? FloorCreate : null}
           edit={permissions.includes('ADMIN') ? FloorEdit : null}
