@@ -34,6 +34,14 @@ export class PlantsService extends BaseEntityService {
     }
   }
 
+  async deletePlant(plantId: string): Promise<Plant | undefined> {
+    try {
+      return await this.PlantModel.findByIdAndDelete(plantId);
+    } catch {
+      return null;
+    }
+  }
+
   async findOneById(id: string): Promise<Plant | undefined> {
     return await this.PlantModel.findById(id);
   }

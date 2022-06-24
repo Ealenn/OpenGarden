@@ -6,6 +6,7 @@ import {
 import { Country } from '../../../entities/countries/models/countries.entity';
 import { VarietyPrecocity } from '../../../entities/varieties/models/variety.entity';
 import { VarietyCultureType } from '../../../entities/varieties/models/culture.entity';
+import { PublishedState } from '../../../entities/base.published.entity';
 
 export class VarietyRequirementWaterResponseBody {
   @ApiProperty({ enum: VarietyRequirementWaterNeed })
@@ -78,6 +79,9 @@ export class VarietyResponseBody {
 
   @ApiProperty({ type: VarietyCultureResponseBody })
   culture: VarietyCultureResponseBody;
+
+  @ApiProperty({ enum: PublishedState })
+  status: PublishedState;
 
   @ApiProperty()
   createdBy: string;

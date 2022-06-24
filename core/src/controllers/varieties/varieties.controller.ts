@@ -12,6 +12,7 @@ import mongoose from 'mongoose';
 import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { Role } from '../../auth/roles/role.enum';
+import { PublishedState } from '../../entities/base.published.entity';
 
 @ApiBearerAuth()
 @ApiTags('Varieties')
@@ -34,6 +35,7 @@ export class VarietiesController {
     const createVariety: Variety = {
       ...createVarietyRequestBody,
       _id: null,
+      status: PublishedState.ONLINE,
       plant: new mongoose.Types.ObjectId(createVarietyRequestBody.plant),
       requirement: {
         ...createVarietyRequestBody.requirement,

@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
@@ -22,6 +23,7 @@ import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Response as Res } from 'express';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { Role } from '../../auth/roles/role.enum';
+import { PublishedState } from '../../entities/base.published.entity';
 
 @ApiBearerAuth()
 @ApiTags('Plants')
@@ -35,15 +37,12 @@ export class PlantsController {
   @Roles(Role.ADMIN)
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 201, type: PlantResponseBody })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-    type: ErrorsRequestBody,
-  })
+  @ApiResponse({ status: 400, description: 'Bad Request', type: ErrorsRequestBody })
   async createPlant(@Request() req, @Body() createPlantRequestBody: CreatePlantRequestBody) {
     const createPlant: Plant = {
       ...createPlantRequestBody,
       _id: null,
+      status: PublishedState.ONLINE,
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: req.user._id,
@@ -52,13 +51,23 @@ export class PlantsController {
     return this.mapper.map(plant, Plant, PlantResponseBody);
   }
 
+  @Delete(':plantId')
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 200, type: PlantResponseBody })
+  async deletePlant(@Request() req, @Param('plantId') plantId: string) {
+    const plant = await this.plantsService.deletePlant(plantId);
+    if (!plant) {
+      throw new NotFoundException();
+    }
+
+    return this.mapper.map(plant, Plant, PlantResponseBody);
+  }
+
   @Get(':plantId')
   @ApiResponse({ status: 200, type: PlantResponseBody })
-  @ApiResponse({
-    status: 404,
-    description: 'Not Found',
-    type: ErrorsRequestBody,
-  })
+  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
   async getPlantById(@Param('plantId') plantId: string) {
     const plant = await this.plantsService.findOneById(plantId);
     if (!plant) {
