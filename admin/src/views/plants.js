@@ -31,7 +31,7 @@ export const PlantCreate = (props) => (
     <TabbedForm>
       <FormTab label="Plant">
         <TextInput source="name" />
-        <RichTextInput source="description" fullWidth />
+        <RichTextInput source="description" multiline fullWidth />
       </FormTab>
       <FormTab label="Classification">
         <TextInput source="classification.binomialName" />
@@ -55,7 +55,7 @@ export const PlantEdit = (props) => (
     <TabbedForm>
       <FormTab label="Plant">
         <TextInput source="name" />
-        <RichTextInput source="description" fullWidth />
+        <RichTextInput source="description" multiline fullWidth />
       </FormTab>
       <FormTab label="Classification">
         <TextInput source="classification.binomialName" />
@@ -86,6 +86,7 @@ export const PlantsList = (props) => {
         </ReferenceOneField>
         <DateField source="createdAt" />
         <DateField source="updatedAt" />
+        <ChipField source="status" />
         {permissions.includes('ADMIN') && <EditButton />}
         <ShowButton />
       </Datagrid>
@@ -117,8 +118,16 @@ export const PlantShow = (props) => (
         </ArrayField>
       </Tab>
       <Tab label="Metadata">
+        <ChipField source="status" />
         <ReferenceOneField reference="profiles" source="createdBy">
           <TextField source="username" />
+          <ArrayField source="roles">
+            <SingleFieldList>
+              <StringToLabelObject>
+                <ChipField source="label" />
+              </StringToLabelObject>
+            </SingleFieldList>
+          </ArrayField>
         </ReferenceOneField>
         <DateField source="createdAt" />
         <DateField source="updatedAt" />

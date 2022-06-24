@@ -63,7 +63,7 @@ export class VarietyResponseBody {
   plant: string;
 
   @ApiProperty()
-  variety: string;
+  name: string;
 
   @ApiProperty({ enum: Country })
   origin: Country;
