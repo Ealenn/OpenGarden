@@ -143,6 +143,10 @@ export class VarietyMapperProfiles extends AutomapperProfile {
           mapFrom((s) => mapper.map(s.culture, VarietyCulture, VarietyCultureResponseBody)),
         ),
         forMember(
+          (d) => d.status,
+          mapFrom((s) => s.status),
+        ),
+        forMember(
           (d) => d.createdBy,
           mapFrom((s) => s.createdBy.toString()),
         ),

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { Plant } from '../../plants/models/plant.entity';
-import { BaseEntity } from '../../base.entity';
+import { BasePublishedEntity } from '../../base.published.entity';
 import { VarietyRequirement } from './requirement.entity';
 import { VarietyCulture } from './culture.entity';
 
@@ -14,7 +14,7 @@ export enum VarietyPrecocity {
 }
 
 @Schema()
-export class Variety extends BaseEntity {
+export class Variety extends BasePublishedEntity {
   @Prop({ required: true, type: [{ type: mongoose.Schema.Types.ObjectId, ref: Plant.name }] })
   plant: mongoose.Types.ObjectId;
 

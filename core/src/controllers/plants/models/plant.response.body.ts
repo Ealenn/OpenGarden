@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PublishedState } from '../../../entities/base.published.entity';
 
 export class PlantClassificationResponseBody {
   @ApiProperty()
@@ -35,6 +36,9 @@ export class PlantResponseBody {
 
   @ApiProperty({ type: PlantClassificationResponseBody })
   classification: PlantClassificationResponseBody;
+
+  @ApiProperty({ enum: PublishedState })
+  status: PublishedState;
 
   @ApiProperty()
   createdBy: string;

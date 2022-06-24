@@ -67,6 +67,10 @@ export class PlantMapperProfiles extends AutomapperProfile {
           mapFrom((s) => mapper.map(s.classification, PlantClassification, PlantClassificationResponseBody)),
         ),
         forMember(
+          (d) => d.status,
+          mapFrom((s) => s.status),
+        ),
+        forMember(
           (d) => d.createdBy,
           mapFrom((s) => s.createdBy.toString()),
         ),
