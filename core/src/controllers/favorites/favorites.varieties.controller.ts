@@ -35,7 +35,7 @@ export class FavoritesVarietiesController {
 
   @Delete(':varietyId')
   @ApiResponse({ status: 200 })
-  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   async deleteFavorite(@Response() res: Res, @Request() req, @Param('varietyId') varietyId: string) {
     const favorite = await this.favoritesService.deleteVariety(varietyId, req.user);
     if (!favorite) {
@@ -80,7 +80,7 @@ export class FavoritesVarietiesController {
 
   @Get(':varietyId')
   @ApiResponse({ status: 200, type: FavoriteVarietyResponseBody })
-  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   async getFavoriteVariety(@Response() res: Res, @Request() req, @Param('varietyId') varietyId: string) {
     const favorite = await this.favoritesService.getVariety(varietyId, req.user);
     if (!favorite) {

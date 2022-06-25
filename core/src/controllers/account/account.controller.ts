@@ -44,11 +44,7 @@ export class AccountController {
   @Public()
   @Post('register')
   @ApiResponse({ status: 201, type: ProfileResponseBody })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-    type: ErrorsRequestBody,
-  })
+  @ApiResponse({ status: 400, description: 'Bad Request', type: ErrorsRequestBody })
   @ApiResponse({ status: 409, description: 'Conflict' })
   async register(@Body() registerRequestBody: RegisterRequestBody) {
     const createUser: User = {

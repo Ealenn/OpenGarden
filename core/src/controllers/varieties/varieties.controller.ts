@@ -38,11 +38,7 @@ export class VarietiesController {
   @Roles(Role.ADMIN)
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 201, type: VarietyResponseBody })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-    type: ErrorsRequestBody,
-  })
+  @ApiResponse({ status: 400, description: 'Bad Request', type: ErrorsRequestBody })
   async createVariety(@Request() req, @Body() createVarietyRequestBody: CreateVarietyRequestBody) {
     const createVariety: Variety = {
       ...createVarietyRequestBody,
@@ -65,8 +61,8 @@ export class VarietiesController {
 
   @Delete(':varietyId')
   @Roles(Role.ADMIN)
-  @ApiResponse({ status: 403, description: 'Forbidden', type: ErrorsRequestBody })
-  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 200, type: VarietyResponseBody })
   async deletePlant(@Request() req, @Param('varietyId') varietyId: string) {
     const variety = await this.varietiesService.delete(varietyId);
@@ -79,6 +75,7 @@ export class VarietiesController {
 
   @Get(':varietyId')
   @ApiResponse({ status: 200, type: VarietyResponseBody })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   async getVarietyById(@Response() res: Res, @Param('varietyId') varietyId: string) {
     const plant = await this.varietiesService.findOneById(varietyId);
     if (!plant) {
