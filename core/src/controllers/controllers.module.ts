@@ -22,6 +22,7 @@ import { FavoritesVarietiesController } from './favorites/favorites.varieties.co
 import { VarietyExistsRule } from './varieties/constraint/variety.exists.rule';
 import { FavoriteVarietiesMapperProfiles } from './favorites/models/mapper.profiles';
 import { RootController } from './root.controller';
+import { StatsController } from './stats/stats.controller';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { RootController } from './root.controller';
     VarietiesController,
     FloorsController,
     FavoritesVarietiesController,
+    StatsController,
   ],
 })
 export class ControllersModule {}

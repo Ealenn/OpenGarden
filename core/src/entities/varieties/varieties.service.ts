@@ -103,4 +103,8 @@ export class VarietiesService extends BaseEntityService {
     const count = await this.varietyModel.count(findParam);
     return [elements, count];
   }
+
+  async count(): Promise<number> {
+    return await this.varietyModel.estimatedDocumentCount();
+  }
 }

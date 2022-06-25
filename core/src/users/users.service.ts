@@ -27,4 +27,8 @@ export class UsersService {
   async findOneById(id: string): Promise<User | undefined> {
     return await this.userModel.findOne({ id });
   }
+
+  async count(): Promise<number> {
+    return await this.userModel.estimatedDocumentCount();
+  }
 }

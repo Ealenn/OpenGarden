@@ -6,6 +6,7 @@ import { HttpClient } from "./configs/HttpClient";
 import { BASE_URL } from "./configs/BaseUrl";
 
 import { OpenGardenAdminLayout } from './themes/Layout';
+import Dashboard from "./Dashboard";
 
 import { TbSeeding, TbTree, TbPlant2, TbStar } from 'react-icons/tb';
 
@@ -20,7 +21,9 @@ const App = () => (
     requireAuth={true}
     layout={OpenGardenAdminLayout}
     authProvider={AuthProvider}
-    dataProvider={Provider(BASE_URL, HttpClient)}>
+    dataProvider={Provider(BASE_URL, HttpClient)}
+    dashboard={Dashboard}
+    disableTelemetry>
     {permissions => (
       <>
         <Resource name="plants"
