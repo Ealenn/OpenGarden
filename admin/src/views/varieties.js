@@ -28,6 +28,7 @@ import {
   ReferenceArrayField
 } from "react-admin";
 import { RichTextInput } from 'ra-input-rich-text';
+import Typography from '@mui/material/Typography';
 import { StringToLabelObject } from '../helpers/StringToLabelObject';
 import { GetPermissions } from "../helpers/GetPermissions";
 
@@ -66,27 +67,27 @@ export const VarietyCreate = (props) => (
         <RichTextInput source="description" multiline fullWidth />
       </FormTab>
       <FormTab label="Requirement">
-        <h2>Water</h2>
+        <Typography variant="h5" component="h5">Water</Typography>
         <SelectInput source="requirement.water.needs" choices={[
           { id: 'LOW', name: 'LOW' },
           { id: 'MEDIUM', name: 'MEDIUM' },
           { id: 'HIGH', name: 'HIGH' }
         ]} />
         <RichTextInput source="requirement.water.comment" multiline fullWidth />
-        <h2>Sun</h2>
+        <Typography variant="h5" component="h5">Sun</Typography>
         <SelectInput source="requirement.sun.needs" choices={[
           { id: 'FULLSUN', name: 'FULLSUN' },
           { id: 'SEMISHADE', name: 'SEMISHADE' },
           { id: 'SHADOW', name: 'SHADOW' }
         ]} />
         <RichTextInput source="requirement.sun.comment" multiline fullWidth />
-        <h2>Floors</h2>
+        <Typography variant="h5" component="h5">Floors</Typography>
         <ReferenceArrayInput source="requirement.floors" reference="floors">
           <SelectArrayInput optionText="name" />
         </ReferenceArrayInput>
       </FormTab>
       <FormTab label="Culture">
-        <h2>Types</h2>
+        <Typography variant="h5" component="h5">Types</Typography>
         <SelectArrayInput source="culture.cultureTypes" choices={[
           { id: 'DIRECT_SOW', name: 'DIRECT_SOW' },
           { id: 'GREEN_HOUSE', name: 'GREEN_HOUSE' },
@@ -122,27 +123,27 @@ export const VarietyEdit = (props) => (
         <RichTextInput source="description" multiline fullWidth />
       </FormTab>
       <FormTab label="Requirement">
-        <h2>Water</h2>
+        <Typography variant="h5" component="h5">Water</Typography>
         <SelectInput source="requirement.water.needs" choices={[
           { id: 'LOW', name: 'LOW' },
           { id: 'MEDIUM', name: 'MEDIUM' },
           { id: 'HIGH', name: 'HIGH' }
         ]} />
         <RichTextInput source="requirement.water.comment" multiline fullWidth />
-        <h2>Sun</h2>
+        <Typography variant="h5" component="h5">Sun</Typography>
         <SelectInput source="requirement.sun.needs" choices={[
           { id: 'FULLSUN', name: 'FULLSUN' },
           { id: 'SEMISHADE', name: 'SEMISHADE' },
           { id: 'SHADOW', name: 'SHADOW' }
         ]} />
         <RichTextInput source="requirement.sun.comment" multiline fullWidth />
-        <h2>Floors</h2>
+        <Typography variant="h5" component="h5">Floors</Typography>
         <ReferenceArrayInput source="requirement.floors" reference="floors">
           <SelectArrayInput optionText="name" />
         </ReferenceArrayInput>
       </FormTab>
       <FormTab label="Culture">
-        <h2>Types</h2>
+        <Typography variant="h5" component="h5">Types</Typography>
         <SelectArrayInput source="culture.cultureTypes" choices={[
           { id: 'DIRECT_SOW', name: 'DIRECT_SOW' },
           { id: 'GREEN_HOUSE', name: 'GREEN_HOUSE' },
@@ -193,13 +194,13 @@ export const VarietyShow = (props) => (
         <RichTextField source="description" />
       </Tab>
       <Tab label="requirement">
-        <h2>Water</h2>
+        <Typography variant="h5" component="h5">Water</Typography>
         <TextField source="requirement.water.needs" />
         <RichTextField source="requirement.water.comment" />
-        <h2>Sun</h2>
+        <Typography variant="h5" component="h5">Sun</Typography>
         <TextField source="requirement.sun.needs" />
         <RichTextField source="requirement.sun.comment" />
-        <h2>Floors</h2>
+        <Typography variant="h5" component="h5">Floors</Typography>
         <ReferenceArrayField source="requirement.floors" reference="floors">
           <SingleFieldList>
             <ChipField source="name" />
@@ -214,8 +215,8 @@ export const VarietyShow = (props) => (
             </StringToLabelObject>
           </SingleFieldList>
         </ArrayField>
-        <TextField source="description" />
-        <TextField source="spacingBetweenPlants" />
+        <TextField source="culture.description" />
+        <TextField source="culture.spacingBetweenPlants" />
         <ArrayField source="culture.sowingPeriod">
           <SingleFieldList>
             <StringToLabelObject>
