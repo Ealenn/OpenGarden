@@ -9,6 +9,7 @@ import {
   Query,
   Response,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
@@ -17,9 +18,9 @@ import { ApiResponse } from '@nestjs/swagger';
 import { VarietiesService } from '../../entities/varieties/varieties.service';
 import { Variety } from '../../entities/varieties/models/variety.entity';
 import { VarietyResponseBody, VarietySearchResponseBody } from './models/variety.response.body';
-import { CreateVarietyRequestBody } from './models/variety.request.body';
+import { CreateVarietyRequestBody, UpdateVarietyRequestBody } from './models/variety.request.body';
 import { VarietiesSearchRequestQuery } from './models/variety.request.query';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Roles } from '../../auth/roles/roles.decorator';
 import { Role } from '../../auth/roles/role.enum';
@@ -59,12 +60,42 @@ export class VarietiesController {
     return this.mapper.map(plant, Variety, VarietyResponseBody);
   }
 
+  @Put(':varietyId')
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @ApiResponse({ status: 200, type: VarietyResponseBody })
+  async updateVariety(
+    @Request() req,
+    @Param('varietyId') varietyId: string,
+    @Body() updateVarietyRequestBody: UpdateVarietyRequestBody,
+  ) {
+    const variety = await this.varietiesService.findOneById(varietyId);
+    if (!variety) {
+      throw new NotFoundException();
+    }
+
+    variety.plant = new Types.ObjectId(updateVarietyRequestBody.plant);
+    variety.name = updateVarietyRequestBody.name;
+    variety.description = updateVarietyRequestBody.description;
+    variety.origin = updateVarietyRequestBody.origin;
+    variety.culture = updateVarietyRequestBody.culture;
+    variety.requirement = {
+      ...updateVarietyRequestBody.requirement,
+      floors: updateVarietyRequestBody.requirement.floors.map((floor) => new mongoose.Types.ObjectId(floor)),
+    };
+    variety.precocity = updateVarietyRequestBody.precocity;
+
+    const newPlant = await this.varietiesService.update(variety);
+    return this.mapper.map(newPlant, Variety, VarietyResponseBody);
+  }
+
   @Delete(':varietyId')
   @Roles(Role.ADMIN)
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 200, type: VarietyResponseBody })
-  async deletePlant(@Request() req, @Param('varietyId') varietyId: string) {
+  async deleteVariety(@Request() req, @Param('varietyId') varietyId: string) {
     const variety = await this.varietiesService.delete(varietyId);
     if (!variety) {
       throw new NotFoundException();

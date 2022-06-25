@@ -146,3 +146,42 @@ export class CreateVarietyRequestBody {
   @Type(() => CreateVarietyCultureRequestBody)
   culture: CreateVarietyCultureRequestBody;
 }
+
+export class UpdateVarietyRequestBody {
+  @ApiProperty({ required: true })
+  @IsString()
+  @Matches(new RegExp('^[0-9a-fA-F]{24}$'))
+  @Validate(PlantExistsRule)
+  plant: string;
+
+  @ApiProperty({ required: true })
+  @IsString()
+  @Matches('^[a-z0-9_-]{3,30}$')
+  name: string;
+
+  @ApiProperty({ required: true, enum: Country })
+  origin: Country;
+
+  @ApiProperty({ required: true })
+  @IsString()
+  description: string;
+
+  @ApiProperty({ required: true, enum: VarietyPrecocity })
+  precocity: VarietyPrecocity;
+
+  @ApiProperty({ required: true, type: CreateVarietyRequirementRequestBody })
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => CreateVarietyRequirementRequestBody)
+  requirement: CreateVarietyRequirementRequestBody;
+
+  @ApiProperty({ required: true, type: CreateVarietyCultureRequestBody })
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => CreateVarietyCultureRequestBody)
+  culture: CreateVarietyCultureRequestBody;
+}

@@ -29,10 +29,23 @@ export class VarietiesService extends BaseEntityService {
     super();
   }
 
-  async create(plant: Variety): Promise<Variety> {
+  async create(variety: Variety): Promise<Variety> {
     try {
-      plant._id = new mongoose.Types.ObjectId();
-      return await this.varietyModel.create(plant);
+      variety._id = new mongoose.Types.ObjectId();
+      return await this.varietyModel.create(variety);
+    } catch (exception) {
+      if (exception.code === 11000) {
+        throw new ConflictException();
+      }
+      throw exception;
+    }
+  }
+
+  async update(variety: Variety): Promise<Variety> {
+    try {
+      variety.updatedAt = new Date();
+      await this.varietyModel.updateOne(variety);
+      return await this.findOneById(variety._id.toString());
     } catch (exception) {
       if (exception.code === 11000) {
         throw new ConflictException();

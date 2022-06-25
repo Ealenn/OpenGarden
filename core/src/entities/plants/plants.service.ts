@@ -22,10 +22,23 @@ export class PlantsService extends BaseEntityService {
     super();
   }
 
-  async create(Plant: Plant): Promise<Plant> {
+  async create(plant: Plant): Promise<Plant> {
     try {
-      Plant._id = new mongoose.Types.ObjectId();
-      return await this.plantModel.create(Plant);
+      plant._id = new mongoose.Types.ObjectId();
+      return await this.plantModel.create(plant);
+    } catch (exception) {
+      if (exception.code === 11000) {
+        throw new ConflictException();
+      }
+      throw exception;
+    }
+  }
+
+  async update(plant: Plant): Promise<Plant> {
+    try {
+      plant.updatedAt = new Date();
+      await this.plantModel.updateOne(plant);
+      return await this.findOneById(plant._id.toString());
     } catch (exception) {
       if (exception.code === 11000) {
         throw new ConflictException();
