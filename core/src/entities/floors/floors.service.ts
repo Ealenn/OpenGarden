@@ -12,14 +12,14 @@ export class FloorSearchParams extends BaseSearchParams {
 
 @Injectable()
 export class FloorsService extends BaseEntityService {
-  constructor(@InjectModel(Floor.name) private FloorModel: Model<FloorDocument>) {
+  constructor(@InjectModel(Floor.name) private floorModel: Model<FloorDocument>) {
     super();
   }
 
   async create(Floor: Floor): Promise<Floor> {
     try {
       Floor._id = new mongoose.Types.ObjectId();
-      return await this.FloorModel.create(Floor);
+      return await this.floorModel.create(Floor);
     } catch (exception) {
       if (exception.code === 11000) {
         throw new ConflictException();
@@ -30,22 +30,26 @@ export class FloorsService extends BaseEntityService {
 
   async deleteFloor(floorId: string): Promise<Floor | undefined> {
     try {
-      return await this.FloorModel.findByIdAndDelete(floorId);
+      return await this.floorModel.findByIdAndDelete(floorId);
     } catch {
       return null;
     }
   }
 
   async findOneById(id: string): Promise<Floor | undefined> {
-    return await this.FloorModel.findById(id);
+    return await this.floorModel.findById(id);
   }
 
   async search(params: FloorSearchParams): Promise<[Floor[], number]> {
     const { pagination, ...filters } = params;
     const findParam = this._generateFilters(filters);
 
-    const elements = await this.FloorModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
-    const count = await this.FloorModel.count(findParam);
+    const elements = await this.floorModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
+    const count = await this.floorModel.count(findParam);
     return [elements, count];
+  }
+
+  async count(): Promise<number> {
+    return await this.floorModel.estimatedDocumentCount();
   }
 }

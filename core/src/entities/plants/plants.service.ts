@@ -18,14 +18,14 @@ export class PlantSearchParams extends BaseSearchParams {
 
 @Injectable()
 export class PlantsService extends BaseEntityService {
-  constructor(@InjectModel(Plant.name) private PlantModel: Model<PlantDocument>) {
+  constructor(@InjectModel(Plant.name) private plantModel: Model<PlantDocument>) {
     super();
   }
 
   async create(Plant: Plant): Promise<Plant> {
     try {
       Plant._id = new mongoose.Types.ObjectId();
-      return await this.PlantModel.create(Plant);
+      return await this.plantModel.create(Plant);
     } catch (exception) {
       if (exception.code === 11000) {
         throw new ConflictException();
@@ -36,14 +36,14 @@ export class PlantsService extends BaseEntityService {
 
   async deletePlant(plantId: string): Promise<Plant | undefined> {
     try {
-      return await this.PlantModel.findByIdAndDelete(plantId);
+      return await this.plantModel.findByIdAndDelete(plantId);
     } catch {
       return null;
     }
   }
 
   async findOneById(id: string): Promise<Plant | undefined> {
-    return await this.PlantModel.findById(id);
+    return await this.plantModel.findById(id);
   }
 
   async search(params: PlantSearchParams): Promise<[Plant[], number]> {
@@ -56,8 +56,12 @@ export class PlantsService extends BaseEntityService {
     findParam = this._generateFilter(findParam, 'classification.species', species);
     findParam = this._generateFilter(findParam, 'classification.binomialName', binomialName);
 
-    const elements = await this.PlantModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
-    const count = await this.PlantModel.count(findParam);
+    const elements = await this.plantModel.find(findParam).skip(pagination.offset).limit(pagination.limit);
+    const count = await this.plantModel.count(findParam);
     return [elements, count];
+  }
+
+  async count(): Promise<number> {
+    return await this.plantModel.estimatedDocumentCount();
   }
 }

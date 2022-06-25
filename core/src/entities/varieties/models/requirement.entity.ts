@@ -1,6 +1,6 @@
 import { Prop } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { Floor } from '../../floors/models/floor.entity';
+import { Floor, FloorSchema } from '../../floors/models/floor.entity';
 
 export enum VarietyRequirementWaterNeed {
   LOW = 'LOW',
@@ -37,6 +37,6 @@ export class VarietyRequirement {
   @Prop({ required: true })
   sun: VarietyRequirementSun;
 
-  @Prop({ required: true, type: [{ type: mongoose.Schema.Types.ObjectId, ref: Floor.name }] })
+  @Prop({ required: true, type: [{ type: Array<mongoose.Schema.Types.ObjectId>, ref: Floor.name, childSchemas: FloorSchema }] })
   floors: mongoose.Types.ObjectId[];
 }
