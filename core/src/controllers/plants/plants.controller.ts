@@ -53,8 +53,8 @@ export class PlantsController {
 
   @Delete(':plantId')
   @Roles(Role.ADMIN)
-  @ApiResponse({ status: 403, description: 'Forbidden', type: ErrorsRequestBody })
-  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 200, type: PlantResponseBody })
   async deletePlant(@Request() req, @Param('plantId') plantId: string) {
     const plant = await this.plantsService.deletePlant(plantId);
@@ -67,7 +67,7 @@ export class PlantsController {
 
   @Get(':plantId')
   @ApiResponse({ status: 200, type: PlantResponseBody })
-  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   async getPlantById(@Response() res: Res, @Param('plantId') plantId: string) {
     const plant = await this.plantsService.findOneById(plantId);
     if (!plant) {

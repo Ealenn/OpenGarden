@@ -54,7 +54,7 @@ export class FloorsController {
   @Delete(':floorId')
   @Roles(Role.ADMIN)
   @ApiResponse({ status: 403, description: 'Forbidden', type: ErrorsRequestBody })
-  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 200, type: FloorResponseBody })
   async deletePlant(@Response() res: Res, @Request() req, @Param('floorId') plantId: string) {
     const floor = await this.floorsService.deleteFloor(plantId);
@@ -68,7 +68,7 @@ export class FloorsController {
 
   @Get(':floorId')
   @ApiResponse({ status: 200, type: FloorResponseBody })
-  @ApiResponse({ status: 404, description: 'Not Found', type: ErrorsRequestBody })
+  @ApiResponse({ status: 404, description: 'Not Found' })
   async getFloorById(@Response() res: Res, @Param('floorId') floorId: string) {
     const floor = await this.floorsService.findOneById(floorId);
     if (!floor) {

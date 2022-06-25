@@ -10,8 +10,8 @@ export class ErrorsRequestMessageBody {
   @ApiProperty()
   property: string;
 
-  @ApiProperty({ isArray: true, type: ErrorsRequestMessageBody })
-  children: ErrorsRequestMessageBody[];
+  @ApiProperty({ isArray: true })
+  children: Record<string, string>[];
 
   @ApiProperty()
   constraints: Record<string, string>;
@@ -22,7 +22,7 @@ export class ErrorsRequestBody {
   statusCode: number;
 
   @ApiProperty({ isArray: true, type: ErrorsRequestMessageBody })
-  messages: ErrorsRequestMessageBody[];
+  message: ErrorsRequestMessageBody[];
 
   @ApiProperty()
   error: string;
