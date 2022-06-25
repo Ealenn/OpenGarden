@@ -9,6 +9,7 @@ import {
   Post,
   Query,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
@@ -17,7 +18,7 @@ import { ApiResponse } from '@nestjs/swagger';
 import { PlantsService } from '../../entities/plants/plants.service';
 import { Plant } from '../../entities/plants/models/plant.entity';
 import { PlantResponseBody, PlantSearchResponseBody } from './models/plant.response.body';
-import { CreatePlantRequestBody } from './models/plant.request.body';
+import { CreatePlantRequestBody, UpdatePlantRequestBody } from './models/plant.request.body';
 import { PlantsSearchRequestQuery } from './models/plant.request.query';
 import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Response as Res } from 'express';
@@ -49,6 +50,29 @@ export class PlantsController {
     };
     const plant = await this.plantsService.create(createPlant);
     return this.mapper.map(plant, Plant, PlantResponseBody);
+  }
+
+  @Put(':plantId')
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 201, type: PlantResponseBody })
+  @ApiResponse({ status: 400, description: 'Bad Request', type: ErrorsRequestBody })
+  async updatePlant(
+    @Request() req,
+    @Param('plantId') plantId: string,
+    @Body() updatePlantRequestBody: UpdatePlantRequestBody,
+  ) {
+    const plant = await this.plantsService.findOneById(plantId);
+    if (!plant) {
+      throw new NotFoundException();
+    }
+
+    plant.name = updatePlantRequestBody.name;
+    plant.description = updatePlantRequestBody.description;
+    plant.classification = updatePlantRequestBody.classification;
+
+    const newPlant = await this.plantsService.update(plant);
+    return this.mapper.map(newPlant, Plant, PlantResponseBody);
   }
 
   @Delete(':plantId')

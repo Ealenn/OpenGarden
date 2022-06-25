@@ -9,6 +9,7 @@ import {
   Query,
   Response,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
@@ -17,7 +18,7 @@ import { ApiResponse } from '@nestjs/swagger';
 import { FloorsService } from '../../entities/floors/floors.service';
 import { Floor } from '../../entities/floors/models/floor.entity';
 import { FloorResponseBody, FloorSearchResponseBody } from './models/floor.response.body';
-import { CreateFloorRequestBody } from './models/floor.request.body';
+import { CreateFloorRequestBody, UpdateFloorRequestBody } from './models/floor.request.body';
 import { FloorsSearchRequestQuery } from './models/floor.request.query';
 import { ErrorsRequestBody } from '../models/errors.response.body';
 import { Response as Res } from 'express';
@@ -51,13 +52,35 @@ export class FloorsController {
     return this.mapper.map(floor, Floor, FloorResponseBody);
   }
 
+  @Put(':floorId')
+  @Roles(Role.ADMIN)
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 200, type: FloorResponseBody })
+  @ApiResponse({ status: 400, description: 'Bad Request', type: ErrorsRequestBody })
+  async updateFloor(
+    @Request() req,
+    @Param('floorId') floorId: string,
+    @Body() updateFloorRequestBody: UpdateFloorRequestBody,
+  ) {
+    const floor = await this.floorsService.findOneById(floorId);
+    if (!floor) {
+      throw new NotFoundException();
+    }
+
+    floor.name = updateFloorRequestBody.name;
+    floor.description = updateFloorRequestBody.description;
+
+    const newFloor = await this.floorsService.update(floor);
+    return this.mapper.map(newFloor, Floor, FloorResponseBody);
+  }
+
   @Delete(':floorId')
   @Roles(Role.ADMIN)
   @ApiResponse({ status: 403, description: 'Forbidden', type: ErrorsRequestBody })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 200, type: FloorResponseBody })
-  async deletePlant(@Response() res: Res, @Request() req, @Param('floorId') plantId: string) {
-    const floor = await this.floorsService.deleteFloor(plantId);
+  async deletePlant(@Response() res: Res, @Request() req, @Param('floorId') floorId: string) {
+    const floor = await this.floorsService.deleteFloor(floorId);
     if (!floor) {
       throw new NotFoundException();
     }

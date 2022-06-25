@@ -16,10 +16,23 @@ export class FloorsService extends BaseEntityService {
     super();
   }
 
-  async create(Floor: Floor): Promise<Floor> {
+  async create(floor: Floor): Promise<Floor> {
     try {
-      Floor._id = new mongoose.Types.ObjectId();
-      return await this.floorModel.create(Floor);
+      floor._id = new mongoose.Types.ObjectId();
+      return await this.floorModel.create(floor);
+    } catch (exception) {
+      if (exception.code === 11000) {
+        throw new ConflictException();
+      }
+      throw exception;
+    }
+  }
+
+  async update(floor: Floor): Promise<Floor> {
+    try {
+      floor.updatedAt = new Date();
+      await this.floorModel.updateOne(floor);
+      return await this.findOneById(floor._id.toString());
     } catch (exception) {
       if (exception.code === 11000) {
         throw new ConflictException();
