@@ -26,7 +26,11 @@ const fetchJson = async (url, options = {}) => {
   if (status < 200 || status >= 300) {
     console.error(json || body);
     return Promise.reject({
-      message: statusText
+      message: statusText,
+      status,
+      statusText,
+      body,
+      json
     });
   }
   return Promise.resolve({ status: status, headers: headers, body: body, json: json });
