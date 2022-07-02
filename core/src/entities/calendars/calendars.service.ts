@@ -1,7 +1,5 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { Garden, GardenDocument } from '../gardens/models/garden.entity';
-import { Variety, VarietyDocument } from '../varieties/models/variety.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { BaseEntityService } from '../base.entity.service';
 import { Calendar, CalendarItem } from './calendars.model';
@@ -11,8 +9,6 @@ import { User } from '../../users/models/user.entity';
 @Injectable()
 export class CalendarsService extends BaseEntityService {
   constructor(
-    @InjectModel(Variety.name) private varietyModel: Model<VarietyDocument>,
-    @InjectModel(Garden.name) private plantModel: Model<GardenDocument>,
     @InjectModel(FavoriteVariety.name) private favoriteVarietyModel: Model<FavoriteVarietyDocument>,
   ) {
     super();
