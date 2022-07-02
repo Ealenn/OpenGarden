@@ -23,6 +23,8 @@ import { VarietyExistsRule } from './varieties/constraint/variety.exists.rule';
 import { FavoriteVarietiesMapperProfiles } from './favorites/models/mapper.profiles';
 import { RootController } from './root.controller';
 import { StatsController } from './stats/stats.controller';
+import { CalendarsController } from './calendars/calendars.controller';
+import { CalendarsMapperProfiles } from './calendars/models/mapper.profiles';
 
 @Module({
   imports: [
@@ -45,6 +47,7 @@ import { StatsController } from './stats/stats.controller';
     FloorExistsRule,
     FavoriteVarietiesMapperProfiles,
     VarietyExistsRule,
+    CalendarsMapperProfiles,
   ],
   controllers: [
     RootController,
@@ -55,6 +58,7 @@ import { StatsController } from './stats/stats.controller';
     FloorsController,
     FavoritesVarietiesController,
     StatsController,
+    CalendarsController,
   ],
 })
 export class ControllersModule {}
