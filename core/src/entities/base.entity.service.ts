@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 export interface mongoSearchObject {
   $regex?: string;
@@ -33,6 +33,8 @@ export class BaseEntityService {
     for (const [key, value] of Object.entries(filters)) {
       if (value && typeof value === 'string') {
         result = this._generateFilter(result, key, value);
+      } else if (value && typeof value === 'object' && value instanceof Types.ObjectId) {
+        result[key] = value;
       }
     }
     return result;
