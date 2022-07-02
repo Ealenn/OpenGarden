@@ -26,7 +26,7 @@ export default class Dashboard extends React.Component {
       <>
         <Box component="span" sx={{ p: 5 }}>
           <Grid container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs>
               <Card sx={{ minWidth: 275 }} variant="outlined">
                 <CardHeader
                   avatar={<TbUser />}
@@ -34,7 +34,7 @@ export default class Dashboard extends React.Component {
                   subheader={this.state.loading ? <Skeleton /> : this.state?.stats?.estimatedCount?.users}></CardHeader>
               </Card>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs>
               <Card sx={{ minWidth: 275 }} variant="outlined">
                 <CardHeader
                   avatar={<TbTree />}
@@ -42,7 +42,7 @@ export default class Dashboard extends React.Component {
                   subheader={this.state.loading ? <Skeleton /> : this.state?.stats?.estimatedCount?.plants}></CardHeader>
               </Card>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs>
               <Card sx={{ minWidth: 275 }} variant="outlined">
                 <CardHeader
                   avatar={<TbSeeding />}
@@ -50,7 +50,7 @@ export default class Dashboard extends React.Component {
                   subheader={this.state.loading ? <Skeleton /> : this.state?.stats?.estimatedCount?.varieties}></CardHeader>
               </Card>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs>
               <Card sx={{ minWidth: 275 }} variant="outlined">
                 <CardHeader
                   avatar={<TbPlant2 />}
