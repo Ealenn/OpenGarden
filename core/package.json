@@ -41,7 +41,7 @@
     "@nestjs/common": "^8.x.x",
     "@nestjs/config": "^2.x.x",
     "@nestjs/core": "^8.x.x",
-    "@nestjs/jwt": "^8.0.1",
+    "@nestjs/jwt": "^10.0.1",
     "@nestjs/mongoose": "^9.x.x",
     "@nestjs/passport": "^8.x.x",
     "@nestjs/platform-express": "^8.x.x",
