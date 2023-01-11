@@ -50,7 +50,7 @@
     "@nestjs/throttler": "^2.x.x",
     "bcrypt": "^5.x.x",
     "class-transformer": "^0.5.x",
-    "class-validator": "^0.13.x",
+    "class-validator": "^0.14.x",
     "helmet": "^5.x.x",
     "mongoose": "^6.x.x",
     "passport": "^0.5.x",
